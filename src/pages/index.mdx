@@ -1,6 +1,5 @@
 ---
 title: 'Poco'
-subtitle: '浙江大学校内团队'
 description: 'Poco-AI 是来自浙江大学的校内团队，做 AI 应用与工具，把大模型用到日常学习和工作里。'
 bgType: plum
 ogImage: true
@@ -16,11 +15,7 @@ import RenderPage from '~/components/views/RenderPage.astro'
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <StandardLayout
-    title={frontmatter.title}
-    subtitle={frontmatter.subtitle}
-    isWide
-  >
+  <StandardLayout title={frontmatter.title} isWide>
     <div slot="article">
       <RenderPage collectionType="home" id="intro" />
       <div class="team-row">
