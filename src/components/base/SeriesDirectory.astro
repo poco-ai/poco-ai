@@ -1,0 +1,62 @@
+---
+import SeriesList from '~/components/base/SeriesList.astro'
+
+import type { SeriesCollection, SeriesGroup } from '~/utils/series'
+
+interface Props {
+  group: SeriesGroup
+  index: number
+  current: { collection: SeriesCollection; id: string }
+}
+
+const { group, index, current } = Astro.props
+const prev = index > 0 ? group.posts[index - 1] : undefined
+const next = group.posts[index + 1]
+const fadeMs = 220
+const stepMs = 40
+const revealMs = fadeMs + Math.max(0, group.posts.length - 1) * stepMs
+---
+
+<nav class="series-directory" data-pagefind-ignore aria-label="Series">
+  <details
+    style={`--series-reveal: ${revealMs}ms; --series-fade: ${fadeMs}ms; --series-step: ${stepMs}ms`}
+  >
+    <summary><span class="ms-1.5">In this series</span></summary>
+    <SeriesList posts={group.posts} {current} layout="contents" />
+  </details>
+  {
+    (prev || next) && (
+      <div class="series-pager mt-5 flex items-start justify-between gap-6">
+        <div class="min-w-0 flex-1">
+          {prev && <a href={prev.href}>Previous · {prev.title}</a>}
+        </div>
+        <div class="min-w-0 flex-1 text-right">
+          {next && <a href={next.href}>Next · {next.title}</a>}
+        </div>
+      </div>
+    )
+  }
+</nav>
+
+<script>
+  function play(details: HTMLDetailsElement) {
+    const items = [...details.querySelectorAll<HTMLElement>('li')]
+    for (const item of items) item.classList.remove('is-entering')
+    if (!details.open) return
+    void details.offsetWidth
+    for (const item of items) item.classList.add('is-entering')
+  }
+
+  function mount(root: ParentNode) {
+    for (const details of root.querySelectorAll<HTMLDetailsElement>(
+      '.series-directory details'
+    )) {
+      if (details.dataset.seriesReady === 'true') continue
+      details.dataset.seriesReady = 'true'
+      details.addEventListener('toggle', () => play(details))
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => mount(document))
+  mount(document)
+</script>

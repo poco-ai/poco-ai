@@ -1,0 +1,1881 @@
+@import 'viewerjs/dist/viewer.css';
+@import 'rehype-callouts/theme/vitepress';
+@import url('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');
+
+/* Prose Complement */
+.prose {
+  --fg-light: #888;
+  --fg: #555;
+  --fg-deep: #222;
+  --fg-deeper: var(--c-text);
+
+  color: var(--fg);
+}
+
+html.dark .prose {
+  --fg-light: #888;
+  --fg: #bbb;
+  --fg-deep: #ddd;
+  --fg-deeper: var(--c-text);
+}
+
+.prose h1,
+.prose h2 {
+  font-weight: 600;
+}
+
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-weight: 500;
+}
+
+.prose a {
+  border-bottom: 1px solid rgba(125, 125, 125, 0.3);
+  transition: border 0.3s ease-in-out;
+}
+
+.prose a:hover {
+  border-bottom: 1px solid var(--fg);
+}
+
+.prose a code {
+  color: inherit;
+}
+
+.prose hr {
+  width: 50px;
+  margin: 2em auto;
+}
+
+.prose blockquote {
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.6em;
+  padding: 0.5em 1em;
+  margin-left: -1.1em;
+}
+
+.prose blockquote > * {
+  opacity: 0.7;
+}
+
+.prose blockquote > :first-child {
+  margin-top: 0;
+}
+
+.prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.prose blockquote p:first-of-type::before {
+  content: none;
+}
+
+.prose blockquote p:first-of-type::after {
+  content: none;
+}
+
+.prose s {
+  opacity: 0.5;
+}
+
+.prose em {
+  color: var(--fg-deep);
+  font-size: 1.05em;
+  font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+.prose details summary {
+  padding-left: 1px;
+  cursor: pointer;
+}
+
+.prose details:not(.expressive-code *) {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose li details {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose thead th,
+.prose tbody td:first-child {
+  white-space: nowrap;
+}
+
+.prose code:not(.expressive-code code) {
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.3rem;
+  background-color: #88888820;
+}
+
+html.dark .prose code:not(.expressive-code code) {
+  background-color: #88888830;
+}
+
+.prose div:has(> table) {
+  overflow-x: auto;
+}
+
+.prose code:not(.expressive-code code):not(table td code) {
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Expressive Code */
+.expressive-code {
+  margin: 1em 0;
+}
+
+.expressive-code .copy {
+  align-items: center;
+}
+
+.expressive-code .copy button::before {
+  display: none;
+}
+
+.expressive-code .copy button {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+.expressive-code .copy button::after {
+  width: 1rem !important;
+  height: 1rem !important;
+  opacity: 0.5 !important;
+}
+
+.expressive-code .copy button:hover::after,
+.expressive-code .copy button:active::after {
+  opacity: 1 !important;
+}
+
+.expressive-code .copy .feedback {
+  font-size: 14px;
+  border-width: 0;
+}
+
+.expressive-code .ec-section summary {
+  list-style: none;
+}
+
+.expressive-code .ec-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.expressive-code .ec-section summary .code {
+  display: flex;
+  align-items: center;
+}
+
+.expressive-code .ec-section summary svg {
+  display: inline-block;
+}
+
+.expressive-code .gutter .ln {
+  padding-inline: 1ch !important;
+}
+
+.expressive-code .collapsible-start .code {
+  height: 1.4em;
+}
+
+/* viewerjs */
+.viewer-canvas.viewer-loading > img {
+  opacity: 0;
+}
+
+.viewer-backdrop {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.viewer-navbar {
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+.viewer-list > li {
+  margin-right: -1px;
+  border-radius: 1px;
+  border: 1px solid #000;
+}
+
+article img:not(.no-zoom):not(a img) {
+  cursor: zoom-in;
+}
+
+/* rehype-autolink-headings */
+a.header-anchor {
+  float: left;
+  margin-left: -0.9em;
+  border: 0 !important;
+  opacity: 0;
+  font-size: 1em;
+  text-decoration: none;
+}
+
+a.header-anchor:hover,
+a.header-anchor:focus {
+  text-decoration: none;
+}
+
+h1:hover .header-anchor,
+h1:focus .header-anchor,
+h2:hover .header-anchor,
+h2:focus .header-anchor,
+h3:hover .header-anchor,
+h3:focus .header-anchor,
+h4:hover .header-anchor,
+h4:focus .header-anchor,
+h5:hover .header-anchor,
+h5:focus .header-anchor,
+h6:hover .header-anchor,
+h6:focus .header-anchor {
+  opacity: 0.5;
+}
+
+/* rehype-callouts */
+.callout {
+  padding-left: 16px;
+  font-size: 15px;
+}
+
+.callout p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.callout-title-icon {
+  padding-right: 2px;
+}
+
+/* :::iamge */
+html.dark .img-light {
+  display: none;
+}
+
+html:not(.dark) .img-dark {
+  display: none;
+}
+
+/* ::vedio */
+.rds-video {
+  z-index: 150;
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.5rem;
+  margin: 5rem 0;
+
+  scale: 1.2;
+}
+
+@media (max-width: 1023.9px) {
+  .rds-video {
+    margin: 1rem 0;
+    scale: 1;
+  }
+}
+
+.rds-video.no-scale {
+  margin: 1rem 0;
+  scale: 1;
+}
+
+/* :link */
+[data-link='github-acct'],
+[data-link='custom-url'].rounded {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 0.5rem;
+  border-radius: 9999px;
+  border-width: 0px !important;
+
+  font-family: var(--font-condensed);
+  color: var(--fg-light) !important;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  background: #8882;
+  transform: translateY(6px);
+  transition: all 300ms ease-in-out !important;
+}
+
+[data-link='github-acct'] > img,
+[data-link='custom-url'].rounded > img {
+  display: inline-block;
+  height: 1.6em;
+  width: 1.6em;
+  border-radius: 50%;
+  margin: 0 0.25rem 0 0;
+
+  object-fit: cover;
+}
+
+[data-link='github-repo']:not(.github),
+[data-link='custom-url'].square {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.375rem;
+  border-radius: 0.25rem;
+  border-width: 0px !important;
+
+  font-family: var(--font-condensed);
+  color: var(--fg-light) !important;
+  line-height: 100%;
+
+  background: #8882;
+  transform: translateY(3px);
+  transition: all 300ms ease-in-out !important;
+}
+
+[data-link='github-repo']:not(.github) > img,
+[data-link='custom-url'].square > img {
+  display: inline-block;
+  height: 1.1em;
+  width: 1.1em;
+  border-radius: 2px;
+  margin: 0 0.25rem 0 0;
+
+  object-fit: cover;
+}
+
+[data-link='github-acct']:hover,
+[data-link='github-repo']:not(.github):hover,
+[data-link='custom-url'].rounded:hover,
+[data-link='custom-url'].square:hover {
+  color: var(--fg) !important;
+
+  background: #8883;
+}
+
+[data-link='github-repo'].github,
+[data-link='npm-pkg'] {
+  font-family: var(--font-mono);
+}
+
+[data-link='custom-url'] > img,
+[data-link='github-repo'].github > img,
+[data-link='npm-pkg'] > img {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 0;
+  margin: 0 0.25rem 0.2rem 0.1rem;
+}
+
+/* :badge */
+.rds-badge {
+  display: inline-block;
+
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+
+  background-color: var(--badge-color-light, #a8a29e);
+}
+
+html.dark .rds-badge {
+  color: black;
+  background-color: var(--badge-color-dark, #a8a29e);
+}
+
+[data-badge='n'] {
+  --badge-color-light: #f87171;
+  --badge-color-dark: #fecaca;
+}
+
+[data-badge='a'] {
+  --badge-color-light: #fb923c;
+  --badge-color-dark: #fed7aa;
+}
+
+[data-badge='v'] {
+  --badge-color-light: #facc15;
+  --badge-color-dark: #fef08a;
+}
+
+/* rehype-external-links */
+.new-tab-icon {
+  margin-left: 0.1rem;
+  margin-bottom: 0.3rem;
+
+  font-size: 0.6em;
+}
+
+.external-link-cursor {
+  cursor: var(--external-link-cursor);
+}
+
+/* GitHub contribution heatmap. Styles live here because content-collection
+   MDX does not inject styles from imported Astro components. */
+.github-heatmap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 1.5rem 0 0.5rem;
+  overflow-x: auto;
+}
+
+.github-heatmap p {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.github-heatmap .chart {
+  display: grid;
+  grid-template-columns: 1.1rem repeat(var(--weeks), minmax(0, 1fr));
+  grid-template-rows: 0.9rem repeat(7, minmax(0, 1fr));
+  column-gap: 3px;
+  row-gap: 3px;
+  min-width: 36rem;
+  font-size: 10px;
+  line-height: 1;
+  user-select: none;
+}
+
+.github-heatmap .month,
+.github-heatmap .day {
+  opacity: 0.45;
+}
+
+.github-heatmap .day {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+}
+
+.github-heatmap .cell {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: #ebedf0;
+}
+
+.github-heatmap .cell[data-level='1'] {
+  background: #9be9a8;
+}
+
+.github-heatmap .cell[data-level='2'] {
+  background: #40c463;
+}
+
+.github-heatmap .cell[data-level='3'] {
+  background: #30a14e;
+}
+
+.github-heatmap .cell[data-level='4'] {
+  background: #216e39;
+}
+
+html.dark .github-heatmap .cell {
+  background: #2d333b;
+}
+
+html.dark .github-heatmap .cell[data-level='1'] {
+  background: #0e4429;
+}
+
+html.dark .github-heatmap .cell[data-level='2'] {
+  background: #006d32;
+}
+
+html.dark .github-heatmap .cell[data-level='3'] {
+  background: #26a641;
+}
+
+html.dark .github-heatmap .cell[data-level='4'] {
+  background: #39d353;
+}
+
+/* :::poem */
+.poem,
+.poem-series {
+  font-family:
+    'Songti SC', 'Songti TC', 'Noto Serif CJK SC', 'Source Han Serif SC',
+    'Source Han Serif CN', STSong, SimSun, PMingLiU, serif;
+  font-weight: 400;
+  font-synthesis: none;
+  text-autospace: ideograph-alpha ideograph-numeric;
+}
+
+.prose .poem,
+.prose .poem-group {
+  margin-block: 2.75rem;
+}
+
+.prose .poem-group .poem {
+  margin-block: 2.25rem 0;
+}
+
+.prose .poem p {
+  margin: 0;
+}
+
+.prose .poem-group > .poem-series {
+  margin: 0 0 1.75rem;
+}
+
+.poem-series {
+  color: var(--fg-deeper);
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.poem-frame {
+  width: fit-content;
+  max-width: min(36em, 100%);
+  margin-inline: auto;
+}
+
+.poem-heading {
+  margin-bottom: 1.15em;
+  text-align: center;
+}
+
+.poem-title {
+  color: var(--fg-deeper);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.prose .poem .poem-subtitle {
+  margin-top: 0.35em;
+  color: var(--fg);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.poem-epigraph {
+  margin-bottom: 1.15em;
+  color: var(--fg);
+  font-size: 0.875rem;
+  line-height: 1.9;
+}
+
+.poem-epigraph .poem-line {
+  padding-inline-start: 2em;
+  text-indent: 0;
+}
+
+.poem-body {
+  color: var(--fg-deep);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 2.05;
+  line-break: strict;
+}
+
+.poem-line {
+  display: block;
+  padding-inline-start: 1em;
+  text-indent: -1em;
+}
+
+.prose .poem .poem-stanza + .poem-stanza {
+  margin-block-start: 1lh;
+}
+
+.prose .poem .poem-meta {
+  margin-top: 1.15em;
+  color: var(--fg);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-align: end;
+}
+
+.prose .poem em {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  text-emphasis: filled dot;
+  text-emphasis-position: under right;
+  -webkit-text-emphasis: filled dot;
+  -webkit-text-emphasis-position: under;
+}
+
+.poem[data-writing='vertical'] .poem-frame {
+  width: 100%;
+  max-width: 100%;
+}
+
+.poem[data-writing='vertical'] .poem-body {
+  width: fit-content;
+  max-width: 100%;
+  max-height: 32rem;
+  margin-inline: auto;
+  overflow-x: auto;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+.poem[data-writing='vertical'] .poem-line {
+  padding-inline-start: 0;
+  text-indent: 0;
+}
+
+.poem[data-writing='vertical'] em {
+  text-emphasis-position: over right;
+  -webkit-text-emphasis-position: over right;
+}
+
+.prose ol.poem-notes {
+  margin: 1.45em 0 0;
+  padding: 0;
+  color: var(--fg);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+}
+
+.prose ol.poem-notes > li {
+  margin-top: 0.3em;
+  padding-left: 1.6em;
+}
+
+.prose ol.poem-notes > li::before {
+  color: var(--fg-light);
+}
+
+.prose .poem-ref a {
+  border-bottom: none;
+  color: inherit;
+}
+
+.poem-ref {
+  margin-inline-start: 0.12em;
+  font-size: 0.72em;
+  line-height: 0;
+}
+
+@media (max-width: 767.98px) {
+  .poem[data-writing='horizontal'] .poem-frame {
+    max-width: 100%;
+    margin-inline: 0;
+  }
+}
+
+/* ::github ::song ::card ::paper ::skill ::code */
+.prose .note-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin-block: 1.25em;
+  padding: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(125, 125, 125, 0.28);
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font-weight: 400;
+  line-height: 1.45;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.prose a.note-card:hover,
+.prose .note-card-song:hover {
+  border-color: rgba(125, 125, 125, 0.28);
+  background: rgb(0 0 0 / 0.045);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.03),
+    0 2px 6px rgb(0 0 0 / 0.035);
+}
+
+html.dark .prose a.note-card:hover,
+html.dark .prose .note-card-song:hover {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.22),
+    0 2px 8px rgb(0 0 0 / 0.16);
+}
+
+.prose .note-card-media {
+  flex: none;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.prose .note-card-media.note-card-logo {
+  object-fit: cover;
+  background: #c4453c;
+}
+
+.prose .note-card-icon {
+  box-sizing: border-box;
+  padding: 1rem;
+  background: #8882;
+  object-fit: contain;
+}
+
+.note-card-mark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0;
+  border-radius: 8px;
+  background: #8882;
+  color: var(--fg);
+  font-family: var(--font-condensed);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+.note-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.note-card-kicker {
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.note-card-title {
+  display: block;
+  overflow: hidden;
+  color: var(--fg-deeper);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-card-title.is-wrap {
+  display: -webkit-box;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.note-card-owner {
+  color: var(--fg);
+  font-weight: 400;
+}
+
+.note-card-line {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.note-card-line.is-top {
+  align-items: flex-start;
+}
+
+.note-card-line.is-top > .note-card-tag {
+  margin-top: 0.18rem;
+}
+
+.note-card-line > .note-card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.note-card-stars {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.note-card-stars svg {
+  display: block;
+  width: 0.9em;
+  height: 0.9em;
+  color: #e3b341;
+}
+
+.note-card-tag {
+  flex: none;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid rgba(125, 125, 125, 0.45);
+  border-radius: 0.2rem;
+  color: var(--fg);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+}
+
+.note-card-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--fg);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.note-card-paper-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  -webkit-line-clamp: unset;
+}
+
+.note-card-paper-summary > .note-card-mini {
+  margin-top: calc((1.45em - 0.95em) / 2);
+}
+
+.note-card-paper-summary > span {
+  display: -webkit-box;
+  overflow: hidden;
+  min-width: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.note-card-paper-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.note-card-paper-row > .note-card-meta {
+  flex: none;
+  margin-left: auto;
+  text-align: right;
+}
+
+.note-card-authors {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--fg);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.note-card-authors > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-card-mini {
+  flex: none;
+  width: 0.95em;
+  height: 0.95em;
+  color: var(--fg-light);
+}
+
+.note-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.note-card-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.note-card-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #8b949e;
+}
+
+.prose .note-card-song {
+  align-items: center;
+}
+
+.prose .note-card-song .note-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.prose .note-card-song .note-card-track {
+  margin-top: 0.2rem;
+}
+
+.note-card-song-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.note-card-song-line .note-card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.prose .note-card-song a.note-card-open {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-bottom: 0;
+  border-radius: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose .note-card-song a.note-card-open:hover {
+  background: rgba(125, 125, 125, 0.16);
+}
+
+.prose .note-card-song a.note-card-open:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+.prose .note-card-song .note-card-netease {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  border-radius: 0;
+}
+
+.prose .note-card-play {
+  position: relative;
+  flex: none;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  background: #8882;
+  color: #fff;
+  cursor: pointer;
+}
+
+.prose .note-card-play:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+.prose .note-card-play .note-card-media,
+.prose .note-card-play .note-card-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.note-card-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  transform: translate(-50%, -50%);
+}
+
+.note-card-glyph {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.note-card-glyph.is-play {
+  margin-left: 1px;
+}
+
+.prose .note-card-song .is-pause,
+.prose .note-card-song.is-playing .is-play {
+  display: none;
+}
+
+.prose .note-card-song.is-playing .is-pause {
+  display: block;
+}
+
+.prose .note-card-song.is-failed .note-card-play {
+  cursor: not-allowed;
+}
+
+.prose .note-card-song.is-failed .note-card-play-icon {
+  opacity: 0.45;
+}
+
+.note-card-track {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.note-card-time {
+  flex: none;
+}
+
+.note-card-seek {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  height: 1.25rem;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.note-card-seek::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--fg) var(--song-progress, 0%),
+    rgba(125, 125, 125, 0.35) var(--song-progress, 0%)
+  );
+}
+
+.note-card-seek::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  margin-top: -3px;
+  appearance: none;
+  border-radius: 50%;
+  background: var(--fg-deeper);
+}
+
+.note-card-seek::-moz-range-track {
+  height: 2px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(125, 125, 125, 0.35);
+}
+
+.note-card-seek::-moz-range-progress {
+  height: 2px;
+  border-radius: 999px;
+  background: var(--fg);
+}
+
+.note-card-seek::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fg-deeper);
+}
+
+.note-card-status {
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+/* Distance from the viewport top when jumping to an anchor. Smaller sits higher. */
+.prose :is(h1, h2, h3, h4, h5, h6, p, li, blockquote)[id] {
+  scroll-margin-top: 8vh;
+}
+
+.prose .mermaid {
+  display: flex;
+  justify-content: center;
+  margin-block: 1.5em;
+  overflow-x: auto;
+}
+
+.prose .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose .excalidraw-view {
+  position: relative;
+  height: min(78vh, 720px);
+  min-height: 28rem;
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+html.dark .prose .excalidraw-view {
+  border-color: rgb(255 255 255 / 0.16);
+  background: #f4f4f2;
+}
+
+.prose .excalidraw-view:fullscreen {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.prose .excalidraw-view-status {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  color: #6b6b6b;
+  font-size: 0.85rem;
+}
+
+html.dark .prose .excalidraw-view-status {
+  color: #bdbdbd;
+}
+
+.prose .excalidraw-view-controls {
+  position: absolute;
+  z-index: 4;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0.15rem;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 0.55rem;
+  background: rgb(255 255 255 / 0.94);
+  color: #6f6f6f;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+html.dark .prose .excalidraw-view-controls {
+  border-color: rgb(0 0 0 / 0.12);
+  background: rgb(255 255 255 / 0.94);
+  color: #5f5f5f;
+}
+
+.prose .excalidraw-view-controls button {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.prose .excalidraw-view-controls button:hover,
+.prose .excalidraw-view-controls button:focus-visible {
+  background: rgb(0 0 0 / 0.06);
+}
+
+html.dark .prose .excalidraw-view-controls button:hover,
+html.dark .prose .excalidraw-view-controls button:focus-visible {
+  background: rgb(0 0 0 / 0.06);
+}
+
+.prose .excalidraw-view-controls svg {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.prose .excalidraw-view-zoom {
+  min-width: 2.7rem;
+  padding: 0 0.15rem;
+  color: inherit;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+
+.prose .excalidraw-view-sep {
+  width: 1px;
+  height: 0.9rem;
+  margin-inline: 0.15rem;
+  background: rgb(0 0 0 / 0.12);
+}
+
+html.dark .prose .excalidraw-view-sep {
+  background: rgb(0 0 0 / 0.12);
+}
+
+.prose .excalidraw-host {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+}
+
+.prose .excalidraw-host .excalidraw {
+  --color-primary: #5c564c;
+}
+
+.prose .excalidraw-view .App-toolbar,
+.prose .excalidraw-view .layer-ui__wrapper {
+  display: none;
+}
+
+.prose .wikilink-missing {
+  border-bottom: 1px dashed rgba(125, 125, 125, 0.7);
+  opacity: 0.55;
+  cursor: text;
+}
+
+.prose .wikilink-backlinks {
+  margin-top: 2.75em;
+}
+
+.prose .wikilink-backlinks h2 {
+  margin: 0 0 0.4em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  opacity: 0.55;
+}
+
+.prose .wikilink-backlinks ul {
+  margin: 0;
+  padding: 0;
+}
+
+.prose .wikilink-backlinks li {
+  margin: 0.15em 0;
+  padding-left: 0;
+}
+
+.prose .wikilink-backlinks li::before {
+  content: none;
+}
+
+.prose .series-directory {
+  margin-top: 2.75em;
+}
+
+.prose .series-directory summary {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  opacity: 0.55;
+  cursor: pointer;
+}
+
+/* :::folder */
+.prose .folder-view {
+  margin-block: 1.5em;
+}
+
+.prose .folder-note {
+  margin: 0 0 0.65em;
+}
+
+.prose .folder-note > :first-child {
+  margin-top: 0;
+}
+
+.prose .folder-note > :last-child {
+  margin-bottom: 0;
+}
+
+.prose .folder-frame {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  height: 28rem;
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 0.75rem;
+  background: var(--c-bg);
+  color: var(--fg);
+}
+
+html.dark .prose .folder-frame {
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.prose .folder-view.is-single .folder-frame {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.prose .folder-tree {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  border-right: 1px solid rgb(0 0 0 / 0.08);
+  background: rgb(0 0 0 / 0.03);
+}
+
+html.dark .prose .folder-tree {
+  border-right-color: rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.prose .folder-tree ul,
+.prose .folder-tree li {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prose .folder-tree li::before {
+  content: none;
+}
+
+.prose .folder-tree > ul {
+  padding: 0.45rem 0.35rem;
+}
+
+.prose .folder-dir > ul {
+  margin: 0 0 0 0.62rem;
+  padding: 0 0 0.15rem 0.55rem;
+  border-left: 1px solid rgb(0 0 0 / 0.16);
+}
+
+html.dark .prose .folder-dir > ul {
+  border-left-color: rgb(255 255 255 / 0.16);
+}
+
+.prose .folder-twist[aria-expanded='false'] + ul {
+  display: none;
+}
+
+.prose .folder-chevron {
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  color: var(--fg-light);
+  transition: transform 0.12s ease;
+}
+
+.prose .folder-twist[aria-expanded='true'] .folder-chevron {
+  transform: rotate(90deg);
+}
+
+.prose .folder-twist .folder-icon.is-closed,
+.prose .folder-twist[aria-expanded='false'] .folder-icon.is-open {
+  display: none;
+}
+
+.prose .folder-twist[aria-expanded='false'] .folder-icon.is-closed {
+  display: block;
+}
+
+.prose .folder-twist-icons {
+  display: contents;
+}
+
+.prose .folder-tree button {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0.16rem 0.35rem;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.prose .folder-tree button > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prose .folder-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.prose .folder-tree button {
+  cursor: pointer;
+}
+
+.prose .folder-tree button:hover,
+.prose .folder-tree button:focus-visible {
+  background: rgb(0 0 0 / 0.06);
+}
+
+html.dark .prose .folder-tree button:hover,
+html.dark .prose .folder-tree button:focus-visible {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.prose .folder-tree button[aria-current='true'] {
+  background: rgb(0 0 0 / 0.08);
+  color: var(--fg-deeper);
+}
+
+html.dark .prose .folder-tree button[aria-current='true'] {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.prose .folder-main {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.prose .folder-panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* display:none, not visibility. Code blocks and diagrams set visibility:visible
+   on their own nodes, which would otherwise paint through a hidden panel. */
+.prose .folder-panel[hidden],
+.prose .folder-panel[aria-hidden='true'] {
+  display: none !important;
+}
+
+.prose .folder-filebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.45rem 0.3rem 0.9rem;
+  border-bottom: 1px solid rgb(0 0 0 / 0.08);
+  background: var(--c-bg);
+  color: var(--fg-deep);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.prose .folder-filename {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.dark .prose .folder-filebar {
+  border-bottom-color: rgb(255 255 255 / 0.1);
+}
+
+.prose .folder-actions {
+  display: flex;
+  flex: none;
+  margin-left: auto;
+  gap: 0.1rem;
+}
+
+.prose .folder-action {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--fg-light);
+  cursor: pointer;
+}
+
+.prose .folder-action svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.prose .folder-action:hover,
+.prose .folder-action:focus-visible,
+.prose .folder-action[aria-pressed='true'] {
+  background: rgb(0 0 0 / 0.06);
+  color: var(--fg-deeper);
+}
+
+html.dark .prose .folder-action:hover,
+html.dark .prose .folder-action:focus-visible,
+html.dark .prose .folder-action[aria-pressed='true'] {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.prose .folder-body {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: auto;
+}
+
+.prose .folder-rendered,
+.prose .folder-raw-view {
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+}
+
+.prose .folder-rendered {
+  padding: 0.25rem 1rem 1.25rem;
+}
+
+.prose .folder-rendered[hidden],
+.prose .folder-raw-view[hidden] {
+  display: none !important;
+}
+
+.prose .folder-raw-view {
+  padding: 0.85rem 1rem;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg-deep);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.prose .folder-body.is-wrap .folder-raw-view,
+.prose .folder-body.is-wrap .folder-plain,
+.prose .folder-body.is-wrap .ec-line,
+.prose .folder-body.is-wrap .ec-line .code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.prose .folder-frontmatter {
+  display: grid;
+  gap: 0.4em;
+  margin: 0.85em 0 1em;
+}
+
+.prose .folder-frontmatter div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.35em 0.75em;
+  margin: 0;
+}
+
+.prose .folder-frontmatter dt {
+  margin: 0;
+  color: var(--fg-light);
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.prose .folder-frontmatter dd {
+  margin: 0;
+  color: var(--fg);
+  font-size: 0.92em;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+/* Preview headings stay smaller than the article's, so the pane reads as a file. */
+.prose .folder-body :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--fg-deep);
+}
+
+.prose .folder-body h1 {
+  font-size: 1.15em;
+  margin: 0.85em 0 0.35em;
+}
+
+.prose .folder-body h2 {
+  font-size: 1.05em;
+  margin: 0.8em 0 0.3em;
+}
+
+.prose .folder-body h3 {
+  font-size: 0.98em;
+  margin: 0.7em 0 0.25em;
+}
+
+.prose .folder-body :is(h4, h5, h6) {
+  font-size: 0.92em;
+  margin: 0.65em 0 0.2em;
+}
+
+.prose .folder-body .header-anchor {
+  display: none;
+}
+
+.prose .folder-body > :first-child {
+  margin-top: 0;
+}
+
+.prose .folder-rendered > :first-child {
+  margin-top: 0.85em;
+}
+
+.prose .folder-body:has(.folder-source) .folder-rendered,
+.prose .folder-body:has(.folder-plain) .folder-rendered {
+  padding: 0;
+  overflow: hidden;
+}
+
+.prose .folder-rendered > .folder-source,
+.prose .folder-rendered > .folder-plain {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+  border-radius: 0;
+  background: #fafafa;
+}
+
+html.dark .prose .folder-rendered > .folder-source,
+html.dark .prose .folder-rendered > .folder-plain {
+  background: #0e0e0e;
+}
+
+/* A code file is the preview, not a fenced block sitting inside it. */
+.prose .folder-source .expressive-code,
+.prose .folder-source .frame,
+.prose .folder-source pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.prose .folder-source .header,
+.prose .folder-source .copy {
+  display: none;
+}
+
+.prose .folder-source pre {
+  overflow: visible;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.prose .folder-source pre > code {
+  padding-block: 0.35rem 0.75rem;
+}
+
+.prose .folder-source .gutter .ln {
+  color: var(--fg-light);
+  border: 0;
+  padding-inline: 0.35rem 0.4rem !important;
+}
+
+.prose .folder-source .ec-line .code {
+  --ecGtrBrdWd: 0;
+  border-inline-start: 0;
+  padding-inline-start: 0.45rem;
+}
+
+.prose .folder-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+}
+
+.prose pre.folder-plain {
+  margin: 0;
+  overflow: auto;
+  padding: 0.9rem 1rem;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg-deep);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.prose .folder-binary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1em 0;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.prose .folder-binary-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767.98px) {
+  .prose .folder-frame {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 9.5rem) minmax(0, 1fr);
+  }
+
+  .prose .folder-view.is-single .folder-frame {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .prose .folder-tree {
+    border-right: 0;
+    border-bottom: 1px solid rgb(0 0 0 / 0.08);
+  }
+
+  html.dark .prose .folder-tree {
+    border-bottom-color: rgb(255 255 255 / 0.1);
+  }
+}
+
+/* ::skill */
+.prose .skill-card {
+  margin-block: 1.25em;
+}
+
+.prose .skill-card > .note-card {
+  margin-block: 0;
+}
+
+.prose .skill-card .skill-files {
+  margin: 0.65em 0 0;
+}
+
+.prose .skill-card .skill-files > summary {
+  width: fit-content;
+  color: var(--fg-light);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.prose .skill-card .skill-omitted {
+  margin: 0.65em 0 0;
+  color: var(--fg-light);
+  font-size: 0.75rem;
+}
+
+.prose .skill-card .folder-view {
+  margin-block: 0.65em 0 0;
+}
+
+/* ::code */
+.prose .code-card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  margin-block: 1.25em;
+  overflow: hidden;
+  border: 1px solid rgba(125, 125, 125, 0.28);
+  border-radius: 12px;
+}
+
+.prose a.code-card-head {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgba(125, 125, 125, 0.28);
+  color: inherit;
+  font-weight: 400;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.prose a.code-card-head:hover {
+  background: rgb(0 0 0 / 0.045);
+}
+
+html.dark .prose a.code-card-head:hover {
+  background: rgb(255 255 255 / 0.06);
+}
+
+.prose a.code-card-head:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+
+.prose a.code-card-head .note-card-line {
+  align-items: flex-start;
+}
+
+.prose a.code-card-head .note-card-title {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+}
+
+.prose a.code-card-head .note-card-tag {
+  margin-top: 0.16rem;
+}
+
+.prose .code-card .expressive-code,
+.prose .code-card .frame,
+.prose .code-card pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.prose .code-card pre {
+  max-width: 100%;
+}

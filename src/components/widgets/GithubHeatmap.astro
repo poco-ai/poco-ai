@@ -1,0 +1,81 @@
+---
+interface Contribution {
+  date: string
+  count: number
+  level: number
+}
+
+interface Props {
+  user: string
+}
+
+const { user } = Astro.props
+
+let contributions: Contribution[] = []
+let total = 0
+
+try {
+  const response = await fetch(
+    `https://github-contributions-api.jogruber.de/v4/${user}?y=last`
+  )
+  if (response.ok) {
+    const data = await response.json()
+    contributions = data.contributions ?? []
+    total = data.total?.lastYear ?? contributions.reduce((sum, day) => sum + day.count, 0)
+  }
+} catch {
+  contributions = []
+}
+
+const weeks: Contribution[][] = []
+for (let index = 0; index < contributions.length; index += 7) {
+  weeks.push(contributions.slice(index, index + 7))
+}
+
+const months: { label: string; week: number }[] = []
+let previousMonth = ''
+weeks.forEach((week, index) => {
+  const label = new Date(`${week[0].date}T00:00:00`).toLocaleString('en', {
+    month: 'short',
+  })
+  if (label === previousMonth) return
+  previousMonth = label
+  months.push({ label, week: index })
+})
+
+const dayLabels = ['', 'M', '', 'W', '', 'F', '']
+
+const profile = `https://github.com/${user}`
+---
+
+{
+  contributions.length > 0 && (
+    <div class="github-heatmap">
+      <div class="chart" style={`--weeks: ${weeks.length}`}>
+        {months.map((month) => (
+          <span class="month" style={`grid-column: ${month.week + 2}`} aria-hidden="true">
+            {month.label}
+          </span>
+        ))}
+        {dayLabels.map((label, index) => (
+          <span class="day" style={`grid-row: ${index + 2}`} aria-hidden="true">
+            {label}
+          </span>
+        ))}
+        {weeks.map((week, weekIndex) =>
+          week.map((day, dayIndex) => (
+            <span
+              class="cell"
+              data-level={day.level}
+              style={`grid-column: ${weekIndex + 2}; grid-row: ${dayIndex + 2}`}
+              title={`${day.date}: ${day.count} contribution${day.count === 1 ? '' : 's'}`}
+            />
+          ))
+        )}
+      </div>
+      <p>
+        <a href={profile} target="_blank" rel="noopener noreferrer">{total.toLocaleString('en-US')} contributions in the last year</a>
+      </p>
+    </div>
+  )
+}

@@ -1,0 +1,65 @@
+---
+import Link from '~/components/base/Link.astro'
+import { formatDate } from '~/utils/datetime'
+
+import type { SeriesCollection, SeriesPostRef } from '~/utils/series'
+
+interface Props {
+  posts: SeriesPostRef[]
+  current?: { collection: SeriesCollection; id: string }
+  layout?: 'rows' | 'contents'
+}
+
+const { posts, current, layout = 'rows' } = Astro.props
+
+function isCurrent(post: SeriesPostRef) {
+  return current?.collection === post.collection && current.id === post.id
+}
+---
+
+{
+  layout === 'rows' ? (
+    <div>
+      {posts.map((post, idx) => (
+        <div class="slide-enter" style={{ '--enter-stage': idx }}>
+          <Link
+            u-flex="~ items-center lt-md:(col items-start) gap-2"
+            class="border-b-none! mb-6 mt-2 op-transition! overflow-hidden"
+            href={post.href}
+          >
+            <Fragment slot="title">{post.title}</Fragment>
+            <span slot="end" u-flex="~ gap-2 items-center" class="max-w-full">
+              <time class="op-50 text-sm ws-nowrap" datetime={post.pubDate}>
+                {formatDate(post.pubDate, false)}
+              </time>
+            </span>
+          </Link>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <ol class="mt-2! mb-0!">
+      {posts.map((post, idx) => {
+        const currentPost = isCurrent(post)
+        return (
+          <li
+            aria-current={currentPost ? 'page' : undefined}
+            style={{ '--enter-stage': idx }}
+          >
+            {currentPost ? (
+              <span class="font-semibold">{post.title}</span>
+            ) : (
+              <a href={post.href}>{post.title}</a>
+            )}
+            <span class="op-50">
+              {' · '}
+              <time datetime={post.pubDate}>
+                {formatDate(post.pubDate, false)}
+              </time>
+            </span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}

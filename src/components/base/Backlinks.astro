@@ -1,0 +1,20 @@
+---
+import { lookupBacklinks } from '~/utils/wikilink'
+
+const entries = lookupBacklinks(Astro.url.pathname)
+---
+
+{
+  entries.length > 0 && (
+    <section class="wikilink-backlinks" data-pagefind-ignore>
+      <h2>Backlinks</h2>
+      <ul>
+        {entries.map((entry) => (
+          <li>
+            <a href={entry.url}>{entry.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

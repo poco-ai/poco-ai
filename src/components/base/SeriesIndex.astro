@@ -1,0 +1,66 @@
+---
+import SeriesIndexItem from '~/components/base/SeriesIndexItem.astro'
+import { FEATURES } from '~/config'
+import { loadSeriesGroups, seriesPages } from '~/utils/series'
+
+const groups = seriesPages(await loadSeriesGroups()).sort((a, b) =>
+  a.title.localeCompare(b.title)
+)
+
+const toc = FEATURES.toc
+const tocEnabled = Array.isArray(toc) && toc[0]
+const displayPosition = tocEnabled ? toc[1].displayPosition : 'right'
+const displayMode = tocEnabled ? toc[1].displayMode : 'content'
+---
+
+{
+  groups.length > 0 && (
+    <>
+      <nav
+        class="series-index lgp:hidden mb-7"
+        aria-label="Series"
+        data-pagefind-ignore
+      >
+        <p class="my-0! text-sm font-medium tracking-wide op-55">Series</p>
+        <ul class="mx-0! mt-3! mb-0! flex flex-col gap-4 p-0">
+          {groups.map((group) => (
+            <SeriesIndexItem {group} />
+          ))}
+        </ul>
+      </nav>
+      <aside
+        id="series-aside"
+        class="group/aside fixed top-8.875rem z-100 lt-lgp:hidden
+          data-[position=left]:(left-2rem right-auto)
+          data-[position=right]:(left-[calc(100vw-15.625rem-3.2rem)] right-auto)
+          flex w-15.625rem flex-col gap-3"
+        data-position={displayPosition}
+        data-pagefind-ignore
+        aria-label="Series"
+      >
+        <p
+          class="my-0! flex flex-none items-center text-sm font-medium op-30 op-transition-700
+            data-[display-mode=always]:op-60
+            [.prose:hover_&]:data-[display-mode=content]:op-60
+            group-hover/content:data-[display-mode=content]:op-60
+            group-hover/aside:data-[display-mode=hover]:op-60"
+          data-display-mode={displayMode}
+        >
+          Series
+        </p>
+        <ul
+          class="m-0! max-h-[70vh] flex flex-col gap-4 overflow-y-auto p-0 op-0 op-transition-700
+            data-[display-mode=always]:op-60
+            [.prose:hover_&[data-display-mode=content]]:op-60
+            group-hover/content:data-[display-mode=content]:op-60
+            data-[display-mode=hover]:hover:op-60"
+          data-display-mode={displayMode}
+        >
+          {groups.map((group) => (
+            <SeriesIndexItem {group} class="op-100!" />
+          ))}
+        </ul>
+      </aside>
+    </>
+  )
+}

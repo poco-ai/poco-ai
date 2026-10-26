@@ -1,0 +1,39 @@
+name: 上游同步
+description: 从 astro-antfustyle-theme 合并或挑选更新
+title: 'sync: '
+labels: ['framework', 'upstream']
+body:
+  - type: input
+    id: upstream_ref
+    attributes:
+      label: 上游参照
+      placeholder: tag、commit 或 PR 链接
+    validations:
+      required: true
+
+  - type: textarea
+    id: pick_list
+    attributes:
+      label: 纳入 / 跳过
+      placeholder: |
+        纳入：……
+        跳过（本 fork 差异）：……
+    validations:
+      required: true
+
+  - type: textarea
+    id: conflict_notes
+    attributes:
+      label: 已知冲突文件
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      placeholder: |
+        - [ ] pnpm build
+        - [ ] 定制能力：……
+    validations:
+      required: true

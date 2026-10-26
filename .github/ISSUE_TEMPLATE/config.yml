@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 内容 / 写作（不进 Issue）
+    url: https://github.com/ffy6511/antfustyle-blog/discussions
+    about: 文章与站点文案类问题用 Discussions
+  - name: 上游 astro-antfustyle-theme
+    url: https://github.com/lin-stephanie/astro-antfustyle-theme/issues
+    about: 希望回馈上游通用能力的改动

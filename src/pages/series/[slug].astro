@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import SeriesList from '~/components/base/SeriesList.astro'
+import { loadSeriesGroups, seriesPages } from '~/utils/series'
+
+import type { SeriesGroup } from '~/utils/series'
+
+interface Props {
+  group: SeriesGroup
+}
+
+export async function getStaticPaths() {
+  const groups = await loadSeriesGroups()
+
+  return seriesPages(groups).map((group) => ({
+    params: { slug: group.slug },
+    props: { group },
+  }))
+}
+
+const { group } = Astro.props
+---
+
+<BaseLayout
+  title={group.title}
+  description={group.description}
+  ogImage="fallback"
+>
+  <StandardLayout class="prose" title={group.title}>
+    {
+      group.description && (
+        <p slot="head" class="mt--4! op-50">
+          {group.description}
+        </p>
+      )
+    }
+    <SeriesList posts={group.posts} />
+  </StandardLayout>
+</BaseLayout>

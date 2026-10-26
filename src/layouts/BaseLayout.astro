@@ -1,0 +1,320 @@
+---
+import '~/styles/main.css'
+import '~/styles/prose.css'
+import '~/styles/markdown.css'
+
+import Head from '~/components/base/Head.astro'
+import Background from '~/components/backgrounds/Background.astro'
+import Link from '~/components/base/Link.astro'
+import NavBar from '~/components/nav/NavBar.astro'
+import BackLink from '~/components/widgets/BackLink.astro'
+import Footer from '~/components/base/Footer.astro'
+import ToTopButton from '~/components/widgets/ToTopButton.astro'
+import Backdrop from '~/components/base/Backdrop.astro'
+
+import { SITE, UI, FEATURES } from '~/config'
+import { withBasePath } from '~/utils/path'
+
+import type { BgType } from '~/types'
+
+interface Props {
+  title?: string
+  description?: string
+  ogImage?: string | boolean
+  bgType?: BgType | false
+  pubDate?: string
+  lastModDate?: string
+}
+
+const { title, description, ogImage, bgType, pubDate, lastModDate } =
+  Astro.props
+
+let style: Record<string, string> = {}
+
+const { slideEnterAnim } = FEATURES
+const enableSlideEnterAnim = Array.isArray(slideEnterAnim) && slideEnterAnim[0]
+if (enableSlideEnterAnim)
+  style['--enter-step'] = `${slideEnterAnim[1].enterStep}ms`
+
+const {
+  externalLink: { newTab, cursorType },
+} = UI
+const hasCustomCursor =
+  newTab && cursorType.length > 0 && cursorType !== 'pointer'
+if (hasCustomCursor) style['--external-link-cursor'] = cursorType
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <Head {title} {description} {ogImage} {pubDate} {lastModDate} />
+  </head>
+
+  <body
+    class="relative flex flex-col min-h-screen
+      font-sans text-gray-700 dark:text-gray-200"
+    style={Object.keys(style).length !== 0 ? style : undefined}
+    data-no-sliding={enableSlideEnterAnim ? undefined : ''}
+  >
+    <!-- Background -->
+    {bgType && <Background type={bgType} />}
+
+    <!-- Skip Link -->
+    <Link
+      href="#main"
+      class="sr-only focus:(not-sr-only fixed start-1 top-1.5 op-20)"
+    >
+      Skip to content
+    </Link>
+
+    <!-- Nav Bar -->
+    <NavBar />
+
+    <!-- Main -->
+    <main id="main" class="px-7 py-10">
+      <!-- Content -->
+      <slot />
+      <!-- Share -->
+      {
+        Astro.url.pathname !== withBasePath('/') && (
+          <footer class="slide-enter animate-delay-1000! prose mx-auto mt-8 print:hidden">
+            <slot name="share" />
+            <br />
+            <BackLink />
+          </footer>
+        )
+      }
+      <!-- Comments -->
+      <slot name="giscus" />
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+    <ToTopButton />
+
+    <!-- Panel Backdrop (on mobile) -->
+    <Backdrop />
+
+    <!-- Progress Bar -->
+    <script>
+      import nprogress from 'nprogress'
+
+      let diagramTheme: boolean | undefined
+
+      const renderDiagrams = async () => {
+        const nodes = [...document.querySelectorAll<HTMLElement>('.mermaid')]
+        if (!nodes.length) return
+
+        const dark = document.documentElement.classList.contains('dark')
+        const { default: mermaid } = await import('mermaid')
+        for (const node of nodes) {
+          if (!node.dataset.source) node.dataset.source = node.textContent ?? ''
+          if (node.querySelector('svg') && diagramTheme === dark) continue
+          node.textContent = node.dataset.source
+          node.removeAttribute('data-processed')
+        }
+        if (diagramTheme === dark && nodes.every((node) => node.querySelector('svg')))
+          return
+
+        diagramTheme = dark
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: 'strict',
+          theme: dark ? 'dark' : 'neutral',
+          fontFamily: 'var(--font-sans), ui-sans-serif, sans-serif',
+        })
+        await mermaid.run({ nodes })
+      }
+
+      let excalidrawMod: typeof import('../client/excalidraw-view') | undefined
+
+      const renderExcalidraw = async () => {
+        const nodes = [...document.querySelectorAll<HTMLElement>('.excalidraw-view')]
+        if (!nodes.length) return
+        excalidrawMod ??= await import('../client/excalidraw-view')
+        excalidrawMod.mountExcalidraw(nodes)
+      }
+
+      const mountFolders = async () => {
+        if (!document.querySelector('.folder-view')) return
+        const { mountFolderViews } = await import('../client/folder-view')
+        mountFolderViews(document)
+      }
+
+      document.addEventListener('astro:page-load', () => {
+        void renderDiagrams()
+        void renderExcalidraw()
+        void mountFolders()
+      })
+
+      document.addEventListener('astro:before-swap', () => {
+        excalidrawMod?.unmountExcalidraw()
+      })
+
+      new MutationObserver(() => {
+        const dark = document.documentElement.classList.contains('dark')
+        if (dark === diagramTheme) return
+        void renderDiagrams()
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+
+      document.addEventListener('astro:before-preparation', () => {
+        nprogress.start()
+      })
+
+      document.addEventListener('astro:page-load', () => {
+        nprogress.done()
+      })
+    </script>
+    <script is:inline>
+      ;(() => {
+        const offsetFor = (el) => {
+          const margin = Number.parseFloat(getComputedStyle(el).scrollMarginTop)
+          if (Number.isFinite(margin) && margin > 0) return margin
+          return window.innerHeight * 0.2
+        }
+
+        const hashId = () => {
+          const hash = location.hash
+          if (!hash || hash === '#') return ''
+          try {
+            return decodeURIComponent(hash.slice(1))
+          } catch {
+            return ''
+          }
+        }
+
+        const readingTarget = () => {
+          const id = hashId()
+          if (!id) return null
+          const el = document.getElementById(id)
+          if (!el || !el.closest('article')) return null
+          return el
+        }
+
+        const reveal = (el) => {
+          const article = el.closest('.slide-enter-content')
+          if (!article) return
+          const children = [...article.children]
+          const index = children.findIndex((child) => child === el || child.contains(el))
+          if (article.dataset.anchorQueued === el.id) {
+            for (const [i, child] of children.entries()) {
+              if (index === -1 || i <= index) child.classList.add('is-anchor-shown')
+            }
+            return
+          }
+          article.dataset.anchorQueued = el.id
+          const after = []
+          let stage = 1
+          for (const [i, child] of children.entries()) {
+            if (index !== -1 && i > index) {
+              child.classList.remove('is-anchor-shown')
+              child.style.setProperty('--enter-stage', String(stage), 'important')
+              child.style.animation = 'none'
+              after.push(child)
+              stage += 1
+              continue
+            }
+            child.classList.add('is-anchor-shown')
+            child.style.removeProperty('--enter-stage')
+            child.style.animation = ''
+          }
+          void article.offsetWidth
+          for (const child of after) child.style.animation = ''
+        }
+
+        const land = (el) => {
+          const root = document.documentElement
+          root.classList.add('anchor-land')
+          const top =
+            el.getBoundingClientRect().top + window.scrollY - offsetFor(el)
+          window.scrollTo(0, Math.max(0, top))
+          reveal(el)
+          window.__anchorPlacedAt = window.scrollY
+        }
+
+        const settle = () => {
+          document.documentElement.style.scrollBehavior = ''
+          const el = readingTarget()
+          if (!el) {
+            document.documentElement.classList.remove('anchor-land')
+            return
+          }
+          land(el)
+        }
+
+        const stillThere = () =>
+          Math.abs(window.scrollY - window.__anchorPlacedAt) <= 120
+
+        if (!window.__anchorLand) {
+          window.__anchorLand = true
+          document.addEventListener('astro:after-swap', settle)
+          document.addEventListener('astro:page-load', () => {
+            requestAnimationFrame(() => {
+              const el = readingTarget()
+              if (!el || !stillThere()) return
+              const drift = Math.abs(el.getBoundingClientRect().top - offsetFor(el))
+              if (drift > 16) land(el)
+            })
+          })
+          document.addEventListener(
+            'click',
+            (event) => {
+              const link = event.target?.closest?.('a[href]')
+              if (!link || !link.hash || link.hash === '#') return
+              document.documentElement.style.scrollBehavior = 'auto'
+            },
+            true
+          )
+          document.addEventListener('click', (event) => {
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            )
+              return
+            const link = event.target?.closest?.('a[href]')
+            if (!link) return
+            let url
+            try {
+              url = new URL(link.href, location.href)
+            } catch {
+              return
+            }
+            if (
+              url.origin !== location.origin ||
+              url.pathname !== location.pathname ||
+              !url.hash
+            )
+              return
+            let id
+            try {
+              id = decodeURIComponent(url.hash.slice(1))
+            } catch {
+              return
+            }
+            const el = document.getElementById(id)
+            if (!el || !el.closest('article')) return
+            // Run after the client router starts its own hash scroll.
+            setTimeout(() => land(el), 0)
+          })
+          document.fonts?.ready.then(() => {
+            if (!stillThere()) return
+            const el = readingTarget()
+            if (el) land(el)
+          })
+        }
+
+        if (location.hash.length > 1)
+          document.documentElement.style.scrollBehavior = 'auto'
+        settle()
+        document.documentElement.style.scrollBehavior = ''
+      })()
+    </script>
+  </body>
+</html>

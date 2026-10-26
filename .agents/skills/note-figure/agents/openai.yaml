@@ -1,0 +1,4 @@
+interface:
+  display_name: "讲解图"
+  short_description: "用 mermaid 或 Excalidraw 给笔记配一张讲解图"
+  default_prompt: "用 $note-figure 为这段讲解配一张 Excalidraw 结构图。"

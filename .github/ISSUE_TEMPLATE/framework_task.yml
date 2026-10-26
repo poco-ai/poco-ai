@@ -1,0 +1,100 @@
+name: 框架任务
+description: 布局、构建、Remark/MDX、样式、配置与工具链等框架层改动
+title: 'framework: '
+labels: ['framework']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        用于框架与基础设施。尽量一个 Issue 对应一个 PR，并写清验收标准。
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响范围
+      options:
+        - 构建与 CI
+        - Astro 配置与路由
+        - 内容与 Schema
+        - Markdown / MDX 管线
+        - 组件与布局
+        - 样式与设计令牌
+        - OG / 搜索 / Pagefind / RSS
+        - 工具脚本
+        - 依赖升级
+        - 上游同步
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: 改动类型
+      options:
+        - feat（功能改进）
+        - refactor
+        - fix
+        - perf
+        - a11y
+        - chore
+        - deps
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 背景与动机
+      placeholder: |
+        现状：……
+        问题：……
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 范围（In / Out）
+      placeholder: |
+        In：……
+        Out：……
+    validations:
+      required: true
+
+  - type: textarea
+    id: approach
+    attributes:
+      label: 实现思路
+      placeholder: |
+        主要文件：……
+        Breaking：是/否
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      placeholder: |
+        - [ ] pnpm check / lint / build
+        - [ ] …
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 备注
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 提交前
+      options:
+        - label: 已查重现有 Issue / PR
+          required: true
+        - label: 非纯内容修改
+          required: true

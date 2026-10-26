@@ -1,0 +1,13 @@
+---
+interface Props {
+  text: string
+  place?: 'bottom' | 'bottom-end' | 'top' | 'top-end'
+  class?: string
+}
+
+const { text, place = 'bottom', class: className } = Astro.props
+---
+
+<span class:list={['tip', `tip-${place}`, className]} data-tip={text}>
+  <slot />
+</span>
