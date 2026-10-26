@@ -168,7 +168,33 @@
   cursor: auto;
 }
 .prose .team-row figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
   text-align: center;
+}
+.prose .team-row figcaption p {
+  margin: 0;
+}
+.prose .team-row figcaption a.team-github {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-bottom: none;
+  color: inherit;
+  line-height: 1;
+  opacity: 0.72;
+  /* .prose a only transitions border, so the shared op-transition shortcut does not apply. */
+  transition-property: opacity, color;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+.prose .team-row figcaption a.team-github:hover {
+  border-bottom: none;
+  color: var(--fg);
+  opacity: 1;
 }
 @media (max-width: 639.9px) {
   .prose .team-row {
