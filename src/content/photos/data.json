@@ -1,1 +1,43 @@
-[]
+[
+  {
+    "id": "goai-stage.jpg",
+    "desc": "Agentero 在 2026 世界人工智能开源大赛（GOAI）无界应用赛道获得亚军。队员是樊铧伟、陈启源、陈家和。"
+  },
+  {
+    "id": "goai-certificate.jpg",
+    "desc": "Agentero 在 2026 世界人工智能开源大赛（GOAI）无界应用赛道获得亚军。2026 年 9 月，杭州。队员樊铧伟、陈启源、陈家和。"
+  },
+  {
+    "id": "agentero-newspaper.jpg",
+    "desc": "2026 年 9 月 19 日，《都市快报》报道了 Agentero：三位浙江大学博士生做的工作台，把读论文、记笔记和问 AI 放在一处。"
+  },
+  {
+    "id": "apsara-talk.jpg",
+    "desc": "樊铧伟在云栖大会上介绍 Agentero。"
+  },
+  {
+    "id": "infoq-interview.jpg",
+    "desc": "InfoQ 采访了 Agentero 团队队长樊铧伟。他是浙江大学控制科学与工程学院的博士生。"
+  },
+  {
+    "id": "poco-hackathon-certificate.jpg",
+    "desc": "Poco 在 AI Hackathon Tour 2026 高校联赛全国总决赛获得行业与生产力变革赛道铜奖。队员是陈启源、樊铧伟、陈家和、卓俊豪、杨紫涵。"
+  },
+  {
+    "id": "philfan-certificate.jpg",
+    "desc": "PhilFan 在环球黑客松「交互重构｜AI × Interaction」获得铜奖。2026 年 1 月 18 日。"
+  },
+  {
+    "id": "classroom-lecture.jpg",
+    "desc": "团队在阶梯教室做了一场分享。"
+  },
+  {
+    "id": "classroom-zijin.jpg",
+    "desc": "团队聚在浙江大学紫金创业元空间。"
+  },
+  {
+    "id": "charger-copyright.jpg",
+    "desc": "樊铧伟的校园充电桩查询助手 V1.0 在 2026 年 2 月 5 日取得计算机软件著作权。"
+  }
+]
+
