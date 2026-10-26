@@ -3,6 +3,7 @@ interface Props {
   title?: string
   subtitle?: string
   isCentered?: boolean
+  isWide?: boolean
   isSearchable?: boolean
   searchFilter?: string
   class?: string
@@ -12,6 +13,7 @@ const {
   title,
   subtitle,
   isCentered = false,
+  isWide = false,
   isSearchable,
   searchFilter,
   class: className,
@@ -21,6 +23,7 @@ const {
 <header
   class:list={{
     'prose mx-auto mb-8': true,
+    'prose-wide': isWide,
     'text-center': isCentered,
   }}
 >
@@ -31,7 +34,10 @@ const {
 {
   Astro.slots.has('article') && (
     <article
-      class="slide-enter-content prose mx-auto"
+      class:list={[
+        'slide-enter-content prose mx-auto',
+        { 'prose-wide': isWide },
+      ]}
       data-pagefind-body={isSearchable ? '' : undefined}
       data-pagefind-filter={
         isSearchable && searchFilter ? searchFilter : undefined

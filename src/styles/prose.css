@@ -3,6 +3,9 @@
   font-size: 1rem;
   line-height: 1.75;
 }
+.prose.prose-wide {
+  max-width: 72rem;
+}
 .prose [class~='lead'] {
   color: #4b5563;
   font-size: 1.25em;
@@ -147,6 +150,31 @@
   line-height: 1.4285714;
   margin-top: 0.8571429em;
 }
+.prose .team-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.prose .team-row > figure {
+  margin: 0;
+}
+.prose .team-row img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center 42%;
+  border-radius: 0.25rem;
+  cursor: auto;
+}
+.prose .team-row figcaption {
+  text-align: center;
+}
+@media (max-width: 639.9px) {
+  .prose .team-row {
+    gap: 0.75rem;
+  }
+}
 .prose code {
   color: var(--fg-deep);
   font-size: 0.875em;
@@ -226,6 +254,9 @@
   margin-inline: auto;
 }
 .prose figure img {
+  display: block;
+  width: 100%;
+  height: auto;
   margin-block: 0;
 }
 .prose video {
