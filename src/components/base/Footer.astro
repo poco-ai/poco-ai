@@ -1,18 +1,28 @@
 ---
 import Link from '~/components/base/Link.astro'
 import { SITE } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 
 const currentYear = new Date().getFullYear()
-const copyrightText = `© ${currentYear} ${SITE.author}`
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <footer class="slide-enter animate-delay-1600! px-7 mt-auto mb-8">
   <div class="prose mx-auto op-50">
     <div class="flex lt-sm:flex-col items-center text-sm whitespace-nowrap">
-      <span>{copyrightText}</span>
+      <span>
+        © {currentYear}{' '}
+        <Link
+          class="op-100! color-[--fg]!"
+          href="https://github.com/poco-ai"
+          external={true}
+        >
+          {SITE.author}
+        </Link>
+      </span>
       <span class="lt-sm:hidden">&nbsp;|&nbsp;</span>
       <span>
-        Powered by
+        {t(locale, 'footerPowered')}
         {' '}
         <Link
           class="op-100! color-[--fg]!"
