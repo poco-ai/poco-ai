@@ -101,6 +101,47 @@ export default defineConfig({
       fallbacks: sansFallbacks,
     },
     {
+      // Glyphs for the homepage epigraph only.
+      provider: fontProviders.local(),
+      name: 'Ma Shan Zheng',
+      cssVariable: '--font-display',
+      fallbacks: ['"Songti SC"', '"STKaiti"', 'serif'],
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: 'normal',
+            src: ['./src/assets/fonts/ma-shan-zheng.woff2'],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Great Vibes',
+      cssVariable: '--font-script',
+      fallbacks: ['cursive'],
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: 'normal',
+            src: ['./src/assets/fonts/great-vibes.woff2'],
+          },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Source Serif 4',
+      cssVariable: '--font-heading',
+      weights: [600],
+      styles: ['normal'],
+      subsets: ['latin'],
+      formats: ['woff2'],
+      fallbacks: ['"Iowan Old Style"', 'Palatino', '"Songti SC"', 'serif'],
+    },
+    {
       provider: fontProviders.google(),
       name: 'Inter',
       cssVariable: '--font-og-sans',

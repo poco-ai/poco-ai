@@ -1,4 +1,6 @@
-> Doing interesting things with like-minded friends, in the best of times, is a joy.
+<p class="home-lead">
+<span>Doing interesting things with like-minded friends, in the best of times, is a joy.</span>
+</p>
 
 ## About
 

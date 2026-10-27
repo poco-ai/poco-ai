@@ -96,6 +96,9 @@
 .prose blockquote p:last-of-type::after {
   content: close-quote;
 }
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-heading), 'Songti SC', 'Noto Serif SC', 'Source Han Serif SC', serif;
+}
 .prose h1 {
   color: var(--fg-deeper);
   font-weight: 800;
@@ -275,6 +278,38 @@
 .prose p {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+}
+.prose p.home-lead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.15em auto 1.35em;
+  max-width: 40rem;
+  text-align: center;
+  text-wrap: balance;
+  font-family: var(--font-script), cursive;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--fg-deep);
+}
+:lang(zh) .prose p.home-lead {
+  font-family: var(--font-display), 'Songti SC', 'STKaiti', serif;
+  font-size: 1.7rem;
+  line-height: 1.45;
+}
+.prose p.home-lead > span[aria-hidden='true'] {
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+  opacity: 0.7;
+}
+@media (max-width: 639.9px) {
+  .prose p.home-lead,
+  :lang(zh) .prose p.home-lead {
+    font-size: 1.35rem;
+  }
 }
 .prose img {
   border-radius: 0.5rem;
