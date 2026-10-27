@@ -1,5 +1,6 @@
 ---
 import Link from '~/components/base/Link.astro'
+import { localeFromPathname, t } from '~/i18n'
 import { withBasePath } from '~/utils/path'
 
 interface Props {
@@ -7,12 +8,13 @@ interface Props {
 }
 
 const { class: className } = Astro.props
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <Link
   class:list={['op-transition', className]}
   href={withBasePath('/rss.xml')}
-  title="RSS feed"
+  title={t(locale, 'rss')}
   external={true}
 >
   <div u-i-lucide-rss></div>

@@ -1,0 +1,345 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import TabbedLayout from '~/layouts/TabbedLayout.astro'
+import Link from '~/components/base/Link.astro'
+import SeriesIndex from '~/components/base/SeriesIndex.astro'
+import SeriesList from '~/components/base/SeriesList.astro'
+import ListView from '~/components/views/ListView.astro'
+import CardView from '~/components/views/CardView.astro'
+import GroupView from '~/components/views/GroupView.astro'
+import PhotoView from '~/components/views/PhotoView.astro'
+import GithubView from '~/components/views/GithubView.astro'
+import RenderPost from '~/components/views/RenderPost.astro'
+import { getFilteredPosts } from '~/utils/data'
+import { loadSeriesGroups, seriesPages } from '~/utils/series'
+import { t } from '~/i18n'
+
+import type { CollectionEntry } from 'astro:content'
+import type { BgType } from '~/types'
+import type { SeriesGroup } from '~/utils/series'
+
+type Shell =
+  | 'blog'
+  | 'projects'
+  | 'photos'
+  | 'shorts'
+  | 'feeds'
+  | 'streams'
+  | 'releases'
+  | 'prs'
+
+interface ShellProps {
+  kind: 'shell'
+  shell: Shell
+}
+
+interface PostProps {
+  kind: 'post'
+  post: CollectionEntry<'blog' | 'shorts'>
+}
+
+interface SeriesProps {
+  kind: 'series'
+  group: SeriesGroup
+}
+
+type Props = ShellProps | PostProps | SeriesProps
+
+export async function getStaticPaths() {
+  const [blog, shorts, groups] = await Promise.all([
+    getFilteredPosts('blog'),
+    getFilteredPosts('shorts'),
+    loadSeriesGroups(),
+  ])
+
+  const shells: Shell[] = [
+    'blog',
+    'projects',
+    'photos',
+    'shorts',
+    'feeds',
+    'streams',
+    'releases',
+    'prs',
+  ]
+
+  return [
+    ...shells.map((shell) => ({
+      params: { slug: shell },
+      props: { kind: 'shell', shell } satisfies ShellProps,
+    })),
+    ...blog.map((post) => ({
+      params: { slug: `blog/${post.id}` },
+      props: { kind: 'post', post } satisfies PostProps,
+    })),
+    ...shorts.map((post) => ({
+      params: { slug: `shorts/${post.id}` },
+      props: { kind: 'post', post } satisfies PostProps,
+    })),
+    ...seriesPages(groups).map((group) => ({
+      params: { slug: `series/${group.slug}` },
+      props: { kind: 'series', group } satisfies SeriesProps,
+    })),
+  ]
+}
+
+const props = Astro.props as Props
+const locale = 'zh' as const
+
+const shellMeta: Record<
+  Shell,
+  {
+    title: string
+    subtitle?: string
+    description: string
+    bgType: BgType | false
+    ogImage: true | 'fallback'
+  }
+> = {
+  blog: {
+    title: t(locale, 'pageBlogTitle'),
+    subtitle: t(locale, 'pageBlogSubtitle'),
+    description: t(locale, 'pageBlogSubtitle'),
+    bgType: 'rose',
+    ogImage: true,
+  },
+  projects: {
+    title: t(locale, 'pageProjectsTitle'),
+    subtitle: t(locale, 'pageProjectsSubtitle'),
+    description: t(locale, 'pageProjectsDescription'),
+    bgType: 'dot',
+    ogImage: true,
+  },
+  photos: {
+    title: t(locale, 'pagePhotosTitle'),
+    subtitle: t(locale, 'pagePhotosSubtitle'),
+    description: t(locale, 'pagePhotosDescription'),
+    bgType: false,
+    ogImage: true,
+  },
+  shorts: {
+    title: t(locale, 'pageShortsTitle'),
+    subtitle: t(locale, 'pageShortsSubtitle'),
+    description: t(locale, 'pageShortsSubtitle'),
+    bgType: 'particle',
+    ogImage: true,
+  },
+  feeds: {
+    title: t(locale, 'pageFeedsTitle'),
+    subtitle: t(locale, 'pageFeedsSubtitle'),
+    description: t(locale, 'pageFeedsSubtitle'),
+    bgType: false,
+    ogImage: 'fallback',
+  },
+  streams: {
+    title: t(locale, 'pageStreamsTitle'),
+    subtitle: t(locale, 'pageStreamsSubtitle'),
+    description: t(locale, 'pageStreamsSubtitle'),
+    bgType: false,
+    ogImage: 'fallback',
+  },
+  releases: {
+    title: t(locale, 'pageReleasesTitle'),
+    description: t(locale, 'pageReleasesTitle'),
+    bgType: 'plum',
+    ogImage: true,
+  },
+  prs: {
+    title: t(locale, 'pagePrsTitle'),
+    description: t(locale, 'pagePrsTitle'),
+    bgType: 'plum',
+    ogImage: true,
+  },
+}
+---
+
+{
+  props.kind === 'post' && (
+    <RenderPost post={props.post} isCommentable={true} />
+  )
+}
+{
+  props.kind === 'series' && (
+    <BaseLayout
+      title={props.group.title}
+      description={props.group.description}
+      ogImage="fallback"
+    >
+      <StandardLayout class="prose" title={props.group.title}>
+        {props.group.description && (
+          <p slot="head" class="mt--4! op-50">
+            {props.group.description}
+          </p>
+        )}
+        <SeriesList posts={props.group.posts} />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'blog' && (
+    <BaseLayout
+      title={shellMeta.blog.title}
+      description={shellMeta.blog.description}
+      bgType={shellMeta.blog.bgType}
+      ogImage={shellMeta.blog.ogImage}
+    >
+      <StandardLayout
+        class="prose"
+        title={shellMeta.blog.title}
+        subtitle={shellMeta.blog.subtitle}
+      >
+        <SeriesIndex />
+        <ListView collectionType="blog" />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'projects' && (
+    <BaseLayout
+      title={shellMeta.projects.title}
+      description={shellMeta.projects.description}
+      bgType={shellMeta.projects.bgType}
+      ogImage={shellMeta.projects.ogImage}
+    >
+      <StandardLayout
+        class="max-w-300 group/content"
+        title={shellMeta.projects.title}
+        subtitle={shellMeta.projects.subtitle}
+        isCentered={true}
+      >
+        <GroupView collectionType="projects" pageToc={true} />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'photos' && (
+    <BaseLayout
+      title={shellMeta.photos.title}
+      description={shellMeta.photos.description}
+      bgType={shellMeta.photos.bgType}
+      ogImage={shellMeta.photos.ogImage}
+    >
+      <StandardLayout
+        title={shellMeta.photos.title}
+        subtitle={shellMeta.photos.subtitle}
+        isCentered={true}
+      >
+        <PhotoView />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'shorts' && (
+    <BaseLayout
+      title={shellMeta.shorts.title}
+      description={shellMeta.shorts.description}
+      bgType={shellMeta.shorts.bgType}
+      ogImage={shellMeta.shorts.ogImage}
+    >
+      <StandardLayout
+        title={shellMeta.shorts.title}
+        subtitle={shellMeta.shorts.subtitle}
+        isCentered={true}
+      >
+        <CardView collectionType="shorts" mode="grid" pageTag={true} />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'feeds' && (
+    <BaseLayout
+      title={shellMeta.feeds.title}
+      description={shellMeta.feeds.description}
+      bgType={shellMeta.feeds.bgType}
+      ogImage={shellMeta.feeds.ogImage}
+    >
+      <TabbedLayout subtitle={shellMeta.feeds.subtitle}>
+        <ListView collectionType="feeds" pageToc={true} />
+      </TabbedLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'streams' && (
+    <BaseLayout
+      title={shellMeta.streams.title}
+      description={shellMeta.streams.description}
+      bgType={shellMeta.streams.bgType}
+      ogImage={shellMeta.streams.ogImage}
+    >
+      <TabbedLayout subtitle={shellMeta.streams.subtitle}>
+        <ListView collectionType="streams" pageToc={true} />
+      </TabbedLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'releases' && (
+    <BaseLayout
+      title={shellMeta.releases.title}
+      description={shellMeta.releases.description}
+      bgType={shellMeta.releases.bgType}
+      ogImage={shellMeta.releases.ogImage}
+    >
+      <StandardLayout class="max-w-65ch" isCentered={true}>
+        <Fragment slot="head">
+          <h1>
+            AstroEco <span class="animate-pulse">{t(locale, 'pageReleasesPulse')}</span>
+          </h1>
+          <p class="mt--4! op-50 italic">
+            {t(locale, 'pageReleasesLead')}{' '}
+            <Link
+              href="https://github.com/lin-stephanie/astro-loaders/tree/main/packages/astro-loader-github-releases"
+              external={true}
+              class="op-100!"
+            >
+              astro-loader-github-releases
+            </Link>
+            {t(locale, 'pageReleasesLeadEnd') && (
+              <> {t(locale, 'pageReleasesLeadEnd')}</>
+            )}
+          </p>
+        </Fragment>
+        <GithubView collectionType="releases" />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}
+{
+  props.kind === 'shell' && props.shell === 'prs' && (
+    <BaseLayout
+      title={shellMeta.prs.title}
+      description={shellMeta.prs.description}
+      bgType={shellMeta.prs.bgType}
+      ogImage={shellMeta.prs.ogImage}
+    >
+      <StandardLayout class="max-w-65ch" isCentered={true}>
+        <Fragment slot="head">
+          <h1>
+            AstroEco <span class="animate-pulse">{t(locale, 'pagePrsPulse')}</span>
+          </h1>
+          <p class="mt--4! op-50 italic">
+            {t(locale, 'pagePrsLead')}{' '}
+            <Link
+              href="https://github.com/lin-stephanie/astro-loaders/tree/main/packages/astro-loader-github-prs"
+              external={true}
+              class="op-100!"
+            >
+              astro-loader-github-prs
+            </Link>
+            {t(locale, 'pagePrsLeadEnd') && (
+              <> {t(locale, 'pagePrsLeadEnd')}</>
+            )}
+          </p>
+        </Fragment>
+        <GithubView collectionType="prs" />
+      </StandardLayout>
+    </BaseLayout>
+  )
+}

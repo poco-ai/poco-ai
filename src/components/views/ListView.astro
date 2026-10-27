@@ -8,6 +8,7 @@ import MobileControl from '~/components/base/MobileControl.astro'
 import Warning from '~/components/base/Warning.astro'
 
 import { FEATURES } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 import { isSameYear, getYear } from '~/utils/datetime'
 import { getFilteredPosts, getSortedPosts, getMinutesRead } from '~/utils/data'
 
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const { collectionType, pageToc = false, pageTag = false } = Astro.props
+const emptyLabel = t(localeFromPathname(Astro.url.pathname), 'empty')
 
 const VALID_COLLECTION_TYPE = ['blog', 'streams', 'feeds']
 const WARNING = `The '${collectionType}' collection type is not built-in.
@@ -164,7 +166,7 @@ if (collectionType === 'feeds') {
   collectionType === 'blog' && (
     <div aria-label="Post list">
       {groupedBlogItems.length === 0 ? (
-        <div class="py-2 op-50">nothing here yet</div>
+        <div class="py-2 op-50">{emptyLabel}</div>
       ) : (
         groupedBlogItems.map((group) => {
           const idx = group.items[0].idx
@@ -203,7 +205,7 @@ if (collectionType === 'feeds') {
   collectionType === 'streams' && (
     <div aria-label="Stream list">
       {sortedStreamItems.length === 0 ? (
-        <div class="py-2 op-50">nothing here yet</div>
+        <div class="py-2 op-50">{emptyLabel}</div>
       ) : (
         sortedStreamItems.map((item, idx) => {
           const { data } = item
@@ -241,7 +243,7 @@ if (collectionType === 'feeds') {
   collectionType === 'feeds' && (
     <div aria-label="Feed list">
       {sortedFeedItems.length === 0 ? (
-        <div class="py-2 op-50">nothing here yet</div>
+        <div class="py-2 op-50">{emptyLabel}</div>
       ) : (
         sortedFeedItems.map((item, idx) => {
           const { data } = item

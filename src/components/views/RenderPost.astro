@@ -17,6 +17,7 @@ import Backlinks from '~/components/base/Backlinks.astro'
 import { getMinutesRead } from '~/utils/data'
 import { loadSeriesGroups, seriesPlacement } from '~/utils/series'
 import { FEATURES } from '~/config'
+import { localeFromPathname, localizeHref, t } from '~/i18n'
 
 import type { CollectionEntry } from 'astro:content'
 
@@ -57,6 +58,7 @@ const shareEnabled = Array.isArray(share) && share[0] && frontmatter.share
 const giscusEnabled =
   isCommentable && Array.isArray(giscus) && giscus[0] && frontmatter.giscus
 
+const locale = localeFromPathname(Astro.url.pathname)
 const collectionType = post.collection
 const isSearchable =
   Array.isArray(search) &&
@@ -78,7 +80,11 @@ frontmatter to <code>false</code> or remove it to publish the post.`
       {
         seriesNav && (
           <div class="op-50 lt-md:text-sm" data-pagefind-ignore>
-            Series · <a href={seriesNav.group.href}>{seriesNav.group.title}</a> ·{' '}
+            {t(locale, 'series')} ·{' '}
+            <a href={localizeHref(seriesNav.group.href, Astro.url.pathname)}>
+              {seriesNav.group.title}
+            </a>{' '}
+            ·{' '}
             {seriesNav.position}/{seriesNav.group.posts.length}
           </div>
         )

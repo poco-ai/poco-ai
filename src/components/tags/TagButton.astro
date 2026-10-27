@@ -1,9 +1,12 @@
 ---
+import { localeFromPathname, t } from '~/i18n'
+
 interface Props {
   stacked?: boolean
 }
 
 const { stacked = false } = Astro.props
+const label = t(localeFromPathname(Astro.url.pathname), 'openTags')
 ---
 
 <button
@@ -13,7 +16,8 @@ const { stacked = false } = Astro.props
     op-0 bg-#8883 dark:bg-#8886 pointer-events-none op-transition
     lt-lgp:(op-50 pointer-events-auto)
     hover:op-100 print:hidden"
-  title="Open tags filter"
+  title={label}
+  aria-label={label}
 >
   <div u-i-ri-price-tag-3-line class="text-gray-700 dark:text-gray-200"></div>
 </button>

@@ -1,12 +1,15 @@
 ---
+import { localeFromPathname, t } from '~/i18n'
 
+const locale = localeFromPathname(Astro.url.pathname)
+const menuLabel = t(locale, 'navMenu')
 ---
 
 <button
   id="nav-open-button"
   class="hidden lt-md:block op-60 hover:op-100 op-transition"
-  title="Navigation"
-  aria-label="Navigation"
+  title={menuLabel}
+  aria-label={menuLabel}
   aria-expanded="false"
   aria-controls="nav-panel"
 >

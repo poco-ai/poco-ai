@@ -1,0 +1,108 @@
+---
+import Link from '~/components/base/Link.astro'
+import {
+  LOCALES,
+  LOCALE_LABEL,
+  localeFromPathname,
+  localePath,
+  t,
+} from '~/i18n'
+import { ensureTrailingSlash, resolvePath } from '~/utils/path'
+
+const locale = localeFromPathname(Astro.url.pathname)
+const bare = localePath(Astro.url.pathname, 'en')
+const label = t(locale, 'language')
+---
+
+<div class="lang-switch">
+  <button
+    type="button"
+    class="lang-switch-button op-60 op-transition"
+    aria-label={label}
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls="lang-menu"
+    title={label}
+  >
+    <span class="i-ri-translate-2" aria-hidden="true"></span>
+  </button>
+  <ul id="lang-menu" class="lang-menu" aria-label={label} hidden>
+    {
+      LOCALES.map((code) => {
+        const href = resolvePath(localePath(bare, code))
+        const current = ensureTrailingSlash(Astro.url.pathname) === href
+        return (
+          <li>
+            <Link
+              class:list={['lang-option', current && 'is-current']}
+              href={href}
+              lang={code}
+              hreflang={code}
+              aria-current={current ? 'page' : undefined}
+            >
+              <span>{LOCALE_LABEL[code]}</span>
+              {current ? (
+                <span class="i-ri-check-line" aria-hidden="true" />
+              ) : (
+                <span class="i-ri-check-line invisible" aria-hidden="true" />
+              )}
+            </Link>
+          </li>
+        )
+      })
+    }
+  </ul>
+</div>
+
+<script>
+  const closeMenu = (root: HTMLElement) => {
+    const button = root.querySelector<HTMLButtonElement>('.lang-switch-button')
+    const menu = root.querySelector<HTMLElement>('.lang-menu')
+    if (!button || !menu) return
+    menu.hidden = true
+    button.setAttribute('aria-expanded', 'false')
+    button.classList.remove('is-open')
+  }
+
+  const toggleMenu = (root: HTMLElement) => {
+    const button = root.querySelector<HTMLButtonElement>('.lang-switch-button')
+    const menu = root.querySelector<HTMLElement>('.lang-menu')
+    if (!button || !menu) return
+    const open = menu.hidden
+    menu.hidden = !open
+    button.setAttribute('aria-expanded', open ? 'true' : 'false')
+    button.classList.toggle('is-open', open)
+  }
+
+  let bound = false
+
+  const onPointerDown = (event: Event) => {
+    const root = document.querySelector<HTMLElement>('.lang-switch')
+    if (!root) return
+    if (event.target instanceof Node && root.contains(event.target)) return
+    closeMenu(root)
+  }
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Escape') return
+    const root = document.querySelector<HTMLElement>('.lang-switch')
+    if (!root) return
+    const menu = root.querySelector<HTMLElement>('.lang-menu')
+    if (!menu || menu.hidden) return
+    closeMenu(root)
+    root.querySelector<HTMLButtonElement>('.lang-switch-button')?.focus()
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector<HTMLElement>('.lang-switch')
+    if (!root || root.dataset.ready === 'true') return
+    root.dataset.ready = 'true'
+    root
+      .querySelector<HTMLButtonElement>('.lang-switch-button')
+      ?.addEventListener('click', () => toggleMenu(root))
+    if (bound) return
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    bound = true
+  })
+</script>

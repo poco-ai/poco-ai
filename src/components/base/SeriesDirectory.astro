@@ -1,5 +1,6 @@
 ---
 import SeriesList from '~/components/base/SeriesList.astro'
+import { localeFromPathname, localizeHref, t } from '~/i18n'
 
 import type { SeriesCollection, SeriesGroup } from '~/utils/series'
 
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const { group, index, current } = Astro.props
+const pathname = Astro.url.pathname
+const locale = localeFromPathname(pathname)
 const prev = index > 0 ? group.posts[index - 1] : undefined
 const next = group.posts[index + 1]
 const fadeMs = 220
@@ -17,21 +20,29 @@ const stepMs = 40
 const revealMs = fadeMs + Math.max(0, group.posts.length - 1) * stepMs
 ---
 
-<nav class="series-directory" data-pagefind-ignore aria-label="Series">
+<nav class="series-directory" data-pagefind-ignore aria-label={t(locale, 'series')}>
   <details
     style={`--series-reveal: ${revealMs}ms; --series-fade: ${fadeMs}ms; --series-step: ${stepMs}ms`}
   >
-    <summary><span class="ms-1.5">In this series</span></summary>
+    <summary><span class="ms-1.5">{t(locale, 'inThisSeries')}</span></summary>
     <SeriesList posts={group.posts} {current} layout="contents" />
   </details>
   {
     (prev || next) && (
       <div class="series-pager mt-5 flex items-start justify-between gap-6">
         <div class="min-w-0 flex-1">
-          {prev && <a href={prev.href}>Previous · {prev.title}</a>}
+          {prev && (
+            <a href={localizeHref(prev.href, pathname)}>
+              {t(locale, 'previous')} · {prev.title}
+            </a>
+          )}
         </div>
         <div class="min-w-0 flex-1 text-right">
-          {next && <a href={next.href}>Next · {next.title}</a>}
+          {next && (
+            <a href={localizeHref(next.href, pathname)}>
+              {t(locale, 'next')} · {next.title}
+            </a>
+          )}
         </div>
       </div>
     )

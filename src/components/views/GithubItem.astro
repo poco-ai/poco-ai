@@ -1,6 +1,7 @@
 ---
 import Link from '~/components/base/Link.astro'
 import { formatDate } from '~/utils/datetime'
+import { localeFromPathname } from '~/i18n'
 
 import type { ExtendedReleaseData, ExtendedPrData } from './GithubView.astro'
 
@@ -19,6 +20,7 @@ type Props =
     }
 
 const { collectionType, idx, item, isDiffMonth } = Astro.props
+const locale = localeFromPathname(Astro.url.pathname)
 
 const isOrg =
   collectionType === 'releases'
@@ -128,7 +130,7 @@ const content =
           {collectionType === 'prs' && <span>#{item.number}</span>}
         </Link>
         <time class="op-60 text-sm lt-sm:text-3.2" datetime={time} title={time}>
-          {formatDate(time, false)}
+          {formatDate(time, false, false, locale)}
         </time>
       </div>
     </div>

@@ -3,6 +3,7 @@ import TocItem from '~/components/toc/TocItem.astro'
 import Link from '~/components/base/Link.astro'
 import { generateToc } from '~/utils/toc'
 import { FEATURES } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 
 import type { MarkdownHeading } from 'astro'
 
@@ -25,6 +26,7 @@ if (!toc || (Array.isArray(toc) && !toc[0])) return
 const { minHeadingLevel, maxHeadingLevel, displayPosition, displayMode } =
   toc[1]
 const specHeadings = generateToc(headings, minHeadingLevel, maxHeadingLevel)
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <!-- Greater than or equal to 1128px -->
@@ -36,7 +38,7 @@ const specHeadings = generateToc(headings, minHeadingLevel, maxHeadingLevel)
     [.prose:hover_&[data-display-mode=content]]:op-60
     group-hover/content:data-[display-mode=content]:op-60
     data-[display-mode=hover]:hover:op-60"
-  aria-label="Table of contents"
+  aria-label={t(locale, 'toc')}
   data-position={displayPosition}
   data-display-mode={displayMode}
   {style}
@@ -45,7 +47,7 @@ const specHeadings = generateToc(headings, minHeadingLevel, maxHeadingLevel)
     href="#skip-toc"
     class="sr-only focus:(not-sr-only fixed start-1 top-1.5 op-20)"
   >
-    Skip toc
+    {t(locale, 'skipToc')}
   </Link>
   <ul class="h-full first-of-type:mt--2 overflow-y-auto">
     {

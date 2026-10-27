@@ -1,5 +1,6 @@
 ---
 import { FEATURES } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 import { withBasePath } from '~/utils/path'
 import { parseTuple } from '~/utils/data'
 
@@ -15,6 +16,13 @@ if (includes.length === 0)
 const filterEnabled = filter && includes.length > 1
 const batchSize = parseTuple(batchLoadSize, 'batchLoadSize')
 const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
+const locale = localeFromPathname(Astro.url.pathname)
+
+function searchTabLabel(item: string) {
+  if (item === 'blog') return t(locale, 'navBlog')
+  if (item === 'shorts') return t(locale, 'navShorts')
+  return item.charAt(0).toUpperCase() + item.slice(1)
+}
 ---
 
 <!-- Search Switch -->
@@ -22,8 +30,8 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
   type="button"
   id="search-switch"
   class="op-60 hover:op-100 op-transition"
-  title="Search"
-  aria-label="Search"
+  title={t(locale, 'search')}
+  aria-label={t(locale, 'search')}
 >
   <div u-i-grommet-icons-search></div>
 </button>
@@ -42,6 +50,13 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
   data-filter={filterEnabled}
   data-batch-size={batchSize}
   data-max-items={maxItems}
+  data-locale={locale}
+  data-label-search={t(locale, 'search')}
+  data-label-no-results={t(locale, 'searchNoResults')}
+  data-label-oops={t(locale, 'searchOops')}
+  data-label-more={t(locale, 'searchMore')}
+  data-label-all={t(locale, 'searchAll')}
+  data-label-loading={t(locale, 'searchLoading')}
 >
   <div class="flex flex-col gap-2">
     <!-- Tab list -->
@@ -50,7 +65,7 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
         <div
           role="tablist"
           class="search-tabs flex gap-2 justify-start items-center text-xs"
-          aria-label="Search categories"
+          aria-label={t(locale, 'searchCategories')}
         >
           {includes.map((item) => (
             <button
@@ -62,7 +77,7 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
                 aria-[selected=false]:hover:op-70 op-transition cursor-pointer"
               data-type={item.toLowerCase()}
             >
-              {item.charAt(0).toUpperCase() + item.slice(1)}
+              {searchTabLabel(item)}
             </button>
           ))}
         </div>
@@ -128,7 +143,7 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
     </div>
   </div>
   <!-- Shortcuts Footer -->
-  <footer role="note" aria-label="Keyboard shortcuts">
+  <footer role="note" aria-label={t(locale, 'searchShortcuts')}>
     <ul
       class="flex flex-wrap items-center gap-4.5 lt-md:hidden
         pt-3 border-t border-[#7d7d7d4d]
@@ -141,17 +156,17 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
         <kbd class="search-kbd-key">
           <div u-i-material-symbols-arrow-downward></div>
         </kbd>
-        <span>Navigate</span>
+        <span>{t(locale, 'searchNavigate')}</span>
       </li>
       <li class="flex items-center gap-1">
         <kbd class="search-kbd-key">
           <div u-i-grommet-icons-return></div>
         </kbd>
-        <span>Go to Page</span>
+        <span>{t(locale, 'searchGo')}</span>
       </li>
       <li class="flex items-center gap-1">
         <kbd class="search-kbd-key">esc</kbd>
-        <span>Close</span>
+        <span>{t(locale, 'searchClose')}</span>
       </li>
     </ul>
   </footer>
@@ -330,11 +345,13 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
 
         // start search
         try {
-          const options: { filters?: Record<string, string | string[]> } = {}
+          const filters: Record<string, string> = {}
+          if (this.dataset.locale) filters.locale = this.dataset.locale
           if (this.#filter && this.#tabs[this.#currentTab]) {
             const type = this.#tabs[this.#currentTab].dataset.type
-            if (type) options.filters = { collection: type }
+            if (type) filters.collection = type
           }
+          const options = Object.keys(filters).length ? { filters } : {}
 
           this.#showLoading(requestId)
 
@@ -423,10 +440,12 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
     }
 
     #updateHint = (type?: string) => {
-      let hint = 'Search'
+      const search = this.dataset.labelSearch || 'Search'
+      let hint = search
       if (type) {
-        const cap = type.charAt(0).toUpperCase() + type.slice(1)
-        hint = `Search ${cap}`.trim()
+        const tab = this.#tabs.find((item) => item.dataset.type === type)
+        const label = tab?.textContent?.trim() || type
+        hint = `${search} ${label}`.trim()
       }
 
       if (this.#input) this.#input.placeholder = hint
@@ -605,7 +624,7 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
         this.#showPagination(false)
         this.#batchLoading = true
       }
-      this.#showFeedback('Loading...')
+      this.#showFeedback(this.dataset.labelLoading || 'Loading...')
       this.#results?.setAttribute('aria-busy', 'true')
       if (!next) this.#input?.setAttribute('aria-expanded', 'true')
     }
@@ -613,14 +632,16 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
     #showOnlyError = (requestId: number) => {
       if (requestId !== this.#activeRequestId) return
 
-      this.#showFeedback('Oops! Something went wrong. Try again.')
+      this.#showFeedback(
+        this.dataset.labelOops || 'Oops! Something went wrong. Try again.'
+      )
       this.#results?.removeAttribute('aria-busy')
     }
 
     #showOnlyNoResult = (requestId: number) => {
       if (requestId !== this.#activeRequestId) return
 
-      this.#showFeedback('No results found.')
+      this.#showFeedback(this.dataset.labelNoResults || 'No results found.')
       this.#results?.removeAttribute('aria-busy')
     }
 
@@ -630,10 +651,14 @@ const maxItems = parseTuple(maxItemsPerPage, 'maxItemsPerPage')
       const all = this.#allResults.length
       const more = Math.min(this.#batchSize, all - this.#renderedCount)
 
-      if (this.#btnMore)
-        this.#btnMore.querySelector('span')!.textContent = `More +${more}`
-      if (this.#btnAll)
-        this.#btnAll.querySelector('span')!.textContent = `All ${all}`
+      const moreLabel = this.dataset.labelMore || 'More'
+      const allLabel = this.dataset.labelAll || 'All'
+      if (this.#btnMore) {
+        this.#btnMore.querySelector('span')!.textContent = `${moreLabel} +${more}`
+      }
+      if (this.#btnAll) {
+        this.#btnAll.querySelector('span')!.textContent = `${allLabel} ${all}`
+      }
 
       this.#pagination.style.display = show ? 'flex' : 'none'
     }

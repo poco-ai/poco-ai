@@ -8,6 +8,7 @@ import { unified } from '@astrojs/markdown-remark'
 
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
+import { DEFAULT_LOCALE, LOCALES } from './src/i18n'
 import { specimenAssets } from './src/utils/specimen-assets'
 
 const sansFallbacks = [
@@ -35,11 +36,26 @@ const monoFallbacks = [
 export default defineConfig({
   site: SITE.website,
   base: SITE.base,
+  i18n: {
+    locales: [...LOCALES],
+    defaultLocale: DEFAULT_LOCALE,
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   build: {
     inlineStylesheets: 'never',
   },
   integrations: [
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: DEFAULT_LOCALE,
+        locales: {
+          en: 'en',
+          zh: 'zh-CN',
+        },
+      },
+    }),
     robotsTxt(),
     unocss({ injectReset: true }),
     astroExpressiveCode(),

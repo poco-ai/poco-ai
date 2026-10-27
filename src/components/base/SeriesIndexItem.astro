@@ -1,5 +1,6 @@
 ---
 import Link from '~/components/base/Link.astro'
+import { localizeHref } from '~/i18n'
 
 import type { SeriesGroup } from '~/utils/series'
 
@@ -13,7 +14,7 @@ const { group, class: className } = Astro.props
 
 <li class="m-0! p-0!">
   <Link
-    href={group.href}
+    href={localizeHref(group.href, Astro.url.pathname)}
     class:list={[
       'flex flex-col items-start gap-0.5 border-b-none! whitespace-normal',
       className,

@@ -8,6 +8,7 @@ import Categorizer from '~/components/base/Categorizer.astro'
 import GroupItem from '~/components/views/GroupItem.astro'
 import projectsData from '~/content/projects/data.json'
 import { FEATURES } from '~/config'
+import { categoryLabel, localeFromPathname, pickLocale } from '~/i18n'
 
 import type { CollectionKey } from 'astro:content'
 import type { GroupItemData } from '~/components/views/GroupItem.astro'
@@ -34,6 +35,7 @@ if (collectionType === 'projects') {
   const projectOrder = new Map(
     projectsData.map(({ id }, index) => [id, index] as const)
   )
+  const locale = localeFromPathname(Astro.url.pathname)
   data = [...projects]
     .sort(
       (a, b) =>
@@ -41,8 +43,14 @@ if (collectionType === 'projects') {
         (projectOrder.get(b.data.id) ?? projects.length)
     )
     .map((p) => p.data)
-    .reduce((acc: Record<string, GroupItemData[]>, { category, ...rest }) => {
-      ;(acc[category] ??= []).push(rest)
+    .reduce((acc: Record<string, GroupItemData[]>, item) => {
+      const label = categoryLabel(locale, item.category)
+      ;(acc[label] ??= []).push({
+        id: item.id,
+        link: item.link,
+        icon: item.icon,
+        desc: pickLocale(item.desc, locale),
+      })
       return acc
     }, {})
 }

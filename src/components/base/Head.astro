@@ -7,8 +7,9 @@ import {
   resolveOgImagePathname,
 } from '~/utils/og-image/routing'
 import { silentLogger } from '~/utils/server'
-import { withBasePath } from '~/utils/path'
+import { withBasePath, ensureTrailingSlash } from '~/utils/path'
 import { SITE } from '~/config'
+import { LOCALES, OG_LOCALE, localeFromPathname, localePath } from '~/i18n'
 
 interface Props {
   title?: string
@@ -26,6 +27,9 @@ const pageDescription = description || SITE.description
 
 const siteName = new URL(SITE.website).hostname
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const locale = localeFromPathname(Astro.url.pathname)
+const barePath = localePath(Astro.url.pathname, 'en')
+const alternateLocales = LOCALES.filter((code) => code !== locale)
 const ogImageConfig = getOgImageConfig()
 const ogImagePathname = ogImageConfig
   ? resolveOgImagePathname({
@@ -128,7 +132,12 @@ const webPageData = {
 <meta property="og:description" content={pageDescription} />
 {ogImageURL && <meta property="og:image" content={ogImageURL} />}
 <meta property="og:site_name" content={siteName} />
-<meta property="og:locale" content={SITE.ogLocale} />
+<meta property="og:locale" content={OG_LOCALE[locale]} />
+{
+  alternateLocales.map((code) => (
+    <meta property="og:locale:alternate" content={OG_LOCALE[code]} />
+  ))
+}
 {
   pubDate && (
     <>
@@ -148,6 +157,20 @@ const webPageData = {
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+{
+  LOCALES.map((code) => (
+    <link
+      rel="alternate"
+      hreflang={code}
+      href={new URL(ensureTrailingSlash(localePath(barePath, code)), Astro.site).href}
+    />
+  ))
+}
+<link
+  rel="alternate"
+  hreflang="x-default"
+  href={new URL(ensureTrailingSlash(barePath), Astro.site).href}
+/>
 
 <!-- Icon -->
 <link rel="icon" type="image/svg+xml" href={withBasePath('/favicon.svg')} />

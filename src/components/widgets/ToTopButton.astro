@@ -1,5 +1,7 @@
 ---
+import { localeFromPathname, t } from '~/i18n'
 
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <button
@@ -9,7 +11,8 @@
     op-0 pointer-events-none op-transition
     lt-lgp:(op-50! bg-#8883 dark:bg-#8886 pointer-events-auto!)
     hover:(op-100! bg-#8883) print:hidden"
-  title="Scroll to top"
+  title={t(locale, 'scrollToTop')}
+  aria-label={t(locale, 'scrollToTop')}
 >
   <div u-i-ri-arrow-up-line></div>
 </button>

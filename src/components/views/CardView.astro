@@ -6,7 +6,8 @@ import DesktopAside from '~/components/base/DesktopAside.astro'
 import MobileControl from '~/components/base/MobileControl.astro'
 
 import { getFilteredPosts, sortPostsByField } from '~/utils/data'
-import { withBasePath } from '~/utils/path'
+import { localeFromPathname, localePath } from '~/i18n'
+import { resolvePath } from '~/utils/path'
 import { FEATURES } from '~/config'
 
 import type { CollectionKey } from 'astro:content'
@@ -48,7 +49,14 @@ if (collectionType === 'shorts') {
   const items = await getFilteredPosts(collectionType)
   const sorted = sortPostsByField(items, 'title')
   dataForGrid = sorted.map((item) => ({
-    link: item.data.redirect || withBasePath(`/${collectionType}/${item.id}/`),
+    link:
+      item.data.redirect ||
+      resolvePath(
+        localePath(
+          `/${collectionType}/${item.id}/`,
+          localeFromPathname(Astro.url.pathname)
+        )
+      ),
     text: item.data.title,
     date: item.data.pubDate,
     tags: item.data.tags,

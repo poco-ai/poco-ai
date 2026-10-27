@@ -1,13 +1,15 @@
 ---
+import { localeFromPathname, t } from '~/i18n'
 
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <button
   id="theme-switch"
   class="op-60 hover:op-100 op-transition"
-  title="Toggle theme"
+  title={t(locale, 'themeToggle')}
   role="switch"
-  aria-label="Dark mode"
+  aria-label={t(locale, 'theme')}
   aria-checked="false"
 >
   <div u-i-ri-sun-line u-dark:i-ri-moon-line></div>

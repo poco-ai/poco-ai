@@ -12,12 +12,16 @@ plugins.ts                      // remark order, then rehype order; folder speci
 unocss.config.ts                // utility presets; icon safelist is derived from UI config
 ec.config.mjs                   // Expressive Code for fenced code
 src/config.ts                   // SITE identity, UI chrome, FEATURES switches
+src/i18n.ts                     // locales, path prefix, and reader-facing chrome strings
 src/types.ts                    // shapes for src/config.ts
 src/schema.ts                   // Zod schemas for pages, posts, and the JSON collections
 src/content.config.ts           // collections: loader plus schema, no rendering
 
 src/pages/                      // route shells and a few endpoints
-  index.mdx                     // home: RenderPage over the home collection
+  index.mdx                     // English home: HomeColumn over the home collection
+  zh/index.astro                // Chinese home
+  zh/[...slug].astro            // Chinese shells, posts, and series
+  zh/404.astro                  // Chinese not-found page
   blog/index.mdx                // series rail, then ListView for blog
   blog/[...slug].astro          // one post, via RenderPost
   shorts/index.mdx              // CardView for shorts
@@ -49,12 +53,14 @@ src/components/views/           // one listing shape each, plus the two renderer
   PhotoView                     // gallery
   RenderPost                    // one blog post or short, with its chrome
   RenderPage                    // one content entry rendered into a page (home)
+  HomeColumn                    // homepage intro, team row, and projects for one locale
+  TeamRow                       // homepage portraits and GitHub captions
 
 src/components/nav/             // bar, item, mobile switch; the link list lives in UI config
 src/components/toc/             // year or heading jumps
 src/components/tags/            // tag filter
 src/components/base/            // rails, post meta, series rail and directory, backlinks, document head
-src/components/widgets/         // search, share, comments, theme, images, rss
+src/components/widgets/         // search, share, comments, theme, language, images, rss
 src/components/backgrounds/     // page background chosen by the shell
 
 src/styles/
@@ -95,7 +101,9 @@ An `.mdx` file under `src/pages/` is a shell. It picks `BaseLayout`, then either
 
 `BaseLayout` is the document. It loads the three stylesheets, draws the nav and footer, and on `astro:page-load` starts mermaid, Excalidraw, and folder views when those nodes exist. `StandardLayout` is the title and the column. `TabbedLayout` reads its tabs from UI config.
 
-`RenderPost` is the post page for both blog and shorts: meta, series placement, cover, share, comments, backlinks, and the aside. `RenderPage` renders a single entry from a collection into an existing shell. The home page uses it for the home collection.
+`RenderPost` is the post page for both blog and shorts: meta, series placement, cover, share, comments, backlinks, and the aside. `RenderPage` renders a single entry from a collection into an existing shell. The home page uses `HomeColumn`, which renders the locale's home entries around `TeamRow`.
+
+English routes stay unprefixed. Chinese routes live under `/zh/`. `src/i18n.ts` owns the locale list, the path prefix, and the reader-facing chrome strings. The language control is `langButton` in the nav layout: an icon that opens the locale list.
 
 The aside is `DesktopAside` on a wide viewport and `MobileControl` on a narrow one. Year or heading jumps come from `Toc`. Tag filtering comes from the tag components. A view opts in with its own props. The global switch still lives in `FEATURES`.
 

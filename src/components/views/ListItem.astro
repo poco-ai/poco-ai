@@ -1,7 +1,8 @@
 ---
 import Link from '~/components/base/Link.astro'
 
-import { withBasePath } from '~/utils/path'
+import { localeFromPathname, localePath, t } from '~/i18n'
+import { resolvePath } from '~/utils/path'
 import { formatDate } from '~/utils/datetime'
 
 interface Props {
@@ -31,6 +32,11 @@ const {
   platform,
   redirect,
 } = Astro.props
+
+const locale = localeFromPathname(Astro.url.pathname)
+const href = redirect
+  ? redirect
+  : resolvePath(localePath(`/${collectionType}/${postSlug}/`, locale))
 ---
 
 <div class="slide-enter" style={{ '--enter-stage': idx }} data-tags={tags}>
@@ -39,7 +45,7 @@ const {
       ? '~ col items-start gap-2'
       : '~ items-center lt-md:(col items-start) gap-2'}
     class="border-b-none! mb-6 mt-2 op-transition! overflow-hidden"
-    href={redirect ? redirect : withBasePath(`/${collectionType}/${postSlug}/`)}
+    href={href}
     external={redirect ? true : false}
     enableNewTabWarning={redirect ? true : false}
   >
@@ -50,8 +56,8 @@ const {
           <span
             u-i-ri-film-line
             class="flex-none op-50 align-middle"
-            title="Provided in video"
-            aria-label="Provided in video"
+            title={t(locale, 'video')}
+            aria-label={t(locale, 'video')}
           />
         )
       }
@@ -60,8 +66,8 @@ const {
           <span
             u-i-ri-radio-line
             class="flex-none op-50 align-middle"
-            title="Provided in radio"
-            aria-label="Provided in radio"
+            title={t(locale, 'radio')}
+            aria-label={t(locale, 'radio')}
           />
         )
       }
@@ -69,11 +75,11 @@ const {
         class="op-50 text-sm ws-nowrap"
         datetime={new Date(date).toISOString()}
       >
-        {formatDate(date, false)}
+        {formatDate(date, false, false, locale)}
       </time>
       {
         !!minutesRead && (
-          <span class="op-40 text-sm ws-nowrap">· {minutesRead} min</span>
+          <span class="op-40 text-sm ws-nowrap">· {minutesRead} {t(locale, 'min')}</span>
         )
       }
       {platform && <span class="op-40 text-sm ws-nowrap">· {platform}</span>}

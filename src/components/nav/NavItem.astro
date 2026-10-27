@@ -1,6 +1,7 @@
 ---
 import Link from '~/components/base/Link.astro'
-import { resolvePath } from '~/utils/path'
+import { localeFromPathname, localePath, navLabel } from '~/i18n'
+import { ensureTrailingSlash, resolvePath } from '~/utils/path'
 
 import type { InternalNav, SocialLink } from '~/types'
 
@@ -20,12 +21,23 @@ type Props =
 
 const { type, item, mergeOnMobile, mobileItemType } = Astro.props
 
-const href = type == 'internal' ? resolvePath(item.path) : item.link
+const locale = localeFromPathname(Astro.url.pathname)
+const href =
+  type === 'internal'
+    ? resolvePath(localePath(item.path, locale))
+    : item.link
+const fallbackText = 'text' in item ? item.text : item.title
+const label =
+  type === 'internal'
+    ? (navLabel(locale, item.path) ?? fallbackText)
+    : fallbackText
+const title =
+  type === 'internal' ? (navLabel(locale, item.path) ?? item.title) : item.title
 const rel = type === 'internal' ? undefined : 'me'
 const external = type === 'internal' ? false : true
 const ariaCurrent =
   type === 'internal'
-    ? Astro.url.pathname === resolvePath(item.path)
+    ? ensureTrailingSlash(Astro.url.pathname) === href
       ? 'page'
       : false
     : undefined
@@ -41,12 +53,12 @@ const ariaCurrent =
             <Link
               class="block op-50! op-transition"
               href={href}
-              title={item.title}
+              title={title}
               rel={rel}
               external={external}
               aria-current={ariaCurrent}
             >
-              <span>{item.text}</span>
+              <span>{label}</span>
             </Link>
           </li>
         )
@@ -56,7 +68,7 @@ const ariaCurrent =
           <Link
             class="block op-50! op-transition"
             href={href}
-            title={item.title}
+            title={title}
             rel={rel}
             external={external}
             aria-current={ariaCurrent}
@@ -69,7 +81,7 @@ const ariaCurrent =
       <Link
         class="lt-md:hidden op-50! op-transition"
         href={href}
-        title={item.title}
+        title={title}
         rel={rel}
         external={external}
         aria-current={ariaCurrent}
@@ -82,7 +94,7 @@ const ariaCurrent =
         {(item.displayMode === 'alwaysText' ||
           item.displayMode === 'textHiddenOnMobile' ||
           item.displayMode === 'textToIconOnMobile') && (
-          <span>{item.text}</span>
+          <span>{label}</span>
         )}
       </Link>
     )
@@ -95,24 +107,24 @@ const ariaCurrent =
           : ''
       } op-transition`}
       href={href}
-      title={item.title}
+      title={title}
       rel={rel}
       external={external}
       aria-current={ariaCurrent}
     >
       {(item.displayMode === 'alwaysText' ||
-        item.displayMode === 'textHiddenOnMobile') && <span>{item.text}</span>}
+        item.displayMode === 'textHiddenOnMobile') && <span>{label}</span>}
       {(item.displayMode === 'alwaysIcon' ||
         item.displayMode === 'iconHiddenOnMobile') && <div class={item.icon} />}
       {item.displayMode === 'textToIconOnMobile' && (
         <>
-          <span class="lt-md:hidden">{item.text}</span>
+          <span class="lt-md:hidden">{label}</span>
           <div class={`md:hidden ${item.icon}`} />
         </>
       )}
       {item.displayMode === 'iconToTextOnMobile' && (
         <>
-          <span class="md:hidden">{item.text}</span>
+          <span class="md:hidden">{label}</span>
           <div class={`lt-md:hidden ${item.icon}`} />
         </>
       )}

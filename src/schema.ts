@@ -203,8 +203,13 @@ export const projectSchema = z.object({
     .url()
     .describe('**Required**. URL linking to the project page or repository.'),
   desc: z
-    .string()
-    .describe('**Required**. A brief description summarizing the project.'),
+    .object({
+      en: z.string(),
+      zh: z.string(),
+    })
+    .describe(
+      '**Required**. A brief description in each locale, keyed by `en` and `zh`.'
+    ),
   icon: z
     .string()
     .regex(
@@ -225,10 +230,12 @@ export const photoSchema = z.object({
       '**Required**. File (name/path) of the image in the `src/content/photos/` directory or a remote image URL.'
     ),
   desc: z
-    .string()
-    .default('')
+    .object({
+      en: z.string(),
+      zh: z.string(),
+    })
     .describe(
-      'Optional description for the image. If not needed, leave the field as an empty string or delete it.'
+      'Caption in each locale, keyed by `en` and `zh`. Use an empty string when a locale has no caption.'
     ),
 })
 

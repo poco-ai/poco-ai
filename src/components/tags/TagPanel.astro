@@ -1,5 +1,6 @@
 ---
 import Tag from '~/components/tags/Tag.astro'
+import { localeFromPathname, t } from '~/i18n'
 import { buildTagRelations } from '~/utils/data'
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 
 const { tags, style } = Astro.props
 const { unique, relations } = buildTagRelations(tags)
+const tagsLabel = t(localeFromPathname(Astro.url.pathname), 'tags')
 ---
 
 <!-- less than 1128px -->
@@ -20,7 +22,7 @@ const { unique, relations } = buildTagRelations(tags)
     bg-[var(--c-bg)] shadow-custom_0_0_10_0 text-[var(--c-text)]"
   {style}
 >
-  <div class="pb-1 b-b b-[var(--c-text)] op-50">Tags</div>
+  <div class="pb-1 b-b b-[var(--c-text)] op-50">{tagsLabel}</div>
   <div
     role="listbox"
     class="flex flex-wrap justify-start items-start content-start

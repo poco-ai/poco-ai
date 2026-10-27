@@ -12,8 +12,8 @@ import Footer from '~/components/base/Footer.astro'
 import ToTopButton from '~/components/widgets/ToTopButton.astro'
 import Backdrop from '~/components/base/Backdrop.astro'
 
-import { SITE, UI, FEATURES } from '~/config'
-import { withBasePath } from '~/utils/path'
+import { UI, FEATURES } from '~/config'
+import { isLocaleHome, localeFromPathname, t } from '~/i18n'
 
 import type { BgType } from '~/types'
 
@@ -42,10 +42,12 @@ const {
 const hasCustomCursor =
   newTab && cursorType.length > 0 && cursorType !== 'pointer'
 if (hasCustomCursor) style['--external-link-cursor'] = cursorType
+
+const locale = localeFromPathname(Astro.url.pathname)
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={locale}>
   <head>
     <Head {title} {description} {ogImage} {pubDate} {lastModDate} />
   </head>
@@ -55,7 +57,15 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
       font-sans text-gray-700 dark:text-gray-200"
     style={Object.keys(style).length !== 0 ? style : undefined}
     data-no-sliding={enableSlideEnterAnim ? undefined : ''}
+    data-locale={locale}
+    data-pagefind-filter={`locale:${locale}`}
   >
+    <script is:inline>
+      document.addEventListener('astro:page-load', () => {
+        const locale = document.body?.dataset.locale
+        if (locale) document.documentElement.lang = locale
+      })
+    </script>
     <!-- Background -->
     {bgType && <Background type={bgType} />}
 
@@ -64,7 +74,7 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
       href="#main"
       class="sr-only focus:(not-sr-only fixed start-1 top-1.5 op-20)"
     >
-      Skip to content
+      {t(locale, 'skip')}
     </Link>
 
     <!-- Nav Bar -->
@@ -76,7 +86,7 @@ if (hasCustomCursor) style['--external-link-cursor'] = cursorType
       <slot />
       <!-- Share -->
       {
-        Astro.url.pathname !== withBasePath('/') && (
+        !isLocaleHome(Astro.url.pathname) && (
           <footer class="slide-enter animate-delay-1000! prose mx-auto mt-8 print:hidden">
             <slot name="share" />
             <br />

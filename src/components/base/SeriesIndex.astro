@@ -1,11 +1,13 @@
 ---
 import SeriesIndexItem from '~/components/base/SeriesIndexItem.astro'
 import { FEATURES } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 import { loadSeriesGroups, seriesPages } from '~/utils/series'
 
 const groups = seriesPages(await loadSeriesGroups()).sort((a, b) =>
   a.title.localeCompare(b.title)
 )
+const locale = localeFromPathname(Astro.url.pathname)
 
 const toc = FEATURES.toc
 const tocEnabled = Array.isArray(toc) && toc[0]
@@ -18,10 +20,10 @@ const displayMode = tocEnabled ? toc[1].displayMode : 'content'
     <>
       <nav
         class="series-index lgp:hidden mb-7"
-        aria-label="Series"
+        aria-label={t(locale, 'series')}
         data-pagefind-ignore
       >
-        <p class="my-0! text-sm font-medium tracking-wide op-55">Series</p>
+        <p class="my-0! text-sm font-medium tracking-wide op-55">{t(locale, 'series')}</p>
         <ul class="mx-0! mt-3! mb-0! flex flex-col gap-4 p-0">
           {groups.map((group) => (
             <SeriesIndexItem {group} />
@@ -36,7 +38,7 @@ const displayMode = tocEnabled ? toc[1].displayMode : 'content'
           flex w-15.625rem flex-col gap-3"
         data-position={displayPosition}
         data-pagefind-ignore
-        aria-label="Series"
+        aria-label={t(locale, 'series')}
       >
         <p
           class="my-0! flex flex-none items-center text-sm font-medium op-30 op-transition-700
@@ -46,7 +48,7 @@ const displayMode = tocEnabled ? toc[1].displayMode : 'content'
             group-hover/aside:data-[display-mode=hover]:op-60"
           data-display-mode={displayMode}
         >
-          Series
+          {t(locale, 'series')}
         </p>
         <ul
           class="m-0! max-h-[70vh] flex flex-col gap-4 overflow-y-auto p-0 op-0 op-transition-700

@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content'
 
+import { DEFAULT_LOCALE, LOCALES, localePath, t } from '~/i18n'
 import {
   OG_IMAGE_DIR,
   FALLBACK_OG_IMAGE_SLUG,
@@ -242,6 +243,63 @@ export async function getOgImageManifest() {
         authorOrBrand,
         fallbackBgType
       )
+  }
+
+  for (const locale of LOCALES) {
+    if (locale === DEFAULT_LOCALE) continue
+
+    const shells: { path: string; title: string; bgType: BgType }[] = [
+      { path: '/blog/', title: t(locale, 'pageBlogTitle'), bgType: 'rose' },
+      {
+        path: '/projects/',
+        title: t(locale, 'pageProjectsTitle'),
+        bgType: 'dot',
+      },
+      {
+        path: '/photos/',
+        title: t(locale, 'pagePhotosTitle'),
+        bgType: fallbackBgType,
+      },
+      {
+        path: '/shorts/',
+        title: t(locale, 'pageShortsTitle'),
+        bgType: 'particle',
+      },
+      {
+        path: '/releases/',
+        title: t(locale, 'pageReleasesTitle'),
+        bgType: 'plum',
+      },
+      { path: '/prs/', title: t(locale, 'pagePrsTitle'), bgType: 'plum' },
+    ]
+    for (const shell of shells) {
+      if (!shell.title.trim() || shell.title === authorOrBrand) continue
+      addManifestItem(
+        manifest,
+        localePath(shell.path, locale),
+        authorOrBrand,
+        shell.title,
+        shell.bgType
+      )
+    }
+
+    for (const collection of collections) {
+      const posts = await getCollection(collection.collection)
+      for (const post of posts) {
+        if (post.data.draft || post.data.redirect) continue
+        if (!shouldGenerateOgImage(authorOrBrand, post.data)) continue
+        addManifestItem(
+          manifest,
+          localePath(
+            getPostPathname(collection.pathnamePrefix, post.id),
+            locale
+          ),
+          authorOrBrand,
+          post.data.title,
+          isBgType(post.data.bgType) ? post.data.bgType : fallbackBgType
+        )
+      }
+    }
   }
 
   return Array.from(manifest.values())

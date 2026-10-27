@@ -4,13 +4,16 @@ import Divider from '~/components/base/Divider.astro'
 import SearchSwitch from '~/components/widgets/SearchSwitch.astro'
 import ThemeSwitch from '~/components/widgets/ThemeSwitch.astro'
 import RssLink from '~/components/widgets/RssLink.astro'
+import LangSwitch from '~/components/widgets/LangSwitch.astro'
 import NavItem from '~/components/nav/NavItem.astro'
 import NavSwitch from '~/components/nav/NavSwitch.astro'
 
 import { UI } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 
 const { navBarLayout, internalNavs, socialLinks } = UI
 const { left, right, mergeOnMobile } = navBarLayout
+const locale = localeFromPathname(Astro.url.pathname)
 
 for (const item of new Set(left)) {
   if (new Set(right).has(item)) {
@@ -28,7 +31,7 @@ for (const item of new Set(left)) {
   <nav
     class={`flex items-center gap-4.8 w-full lt-md:justify-end
     ${left.length !== 0 ? (right.length !== 0 ? 'justify-between' : '') : 'justify-end'}`}
-    aria-label="Main menu"
+    aria-label={t(locale, 'navMenu')}
   >
     {
       left.length !== 0 && (
@@ -44,6 +47,8 @@ for (const item of new Set(left)) {
               <ThemeSwitch />
             ) : key === 'rssLink' ? (
               <RssLink class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
+            ) : key === 'langButton' ? (
+              <LangSwitch />
             ) : key === 'internalNavs' ? (
               internalNavs.map((item) => (
                 <NavItem type="internal" {item} {mergeOnMobile} />
@@ -73,6 +78,8 @@ for (const item of new Set(left)) {
               <ThemeSwitch />
             ) : key === 'rssLink' ? (
               <RssLink class={mergeOnMobile ? 'lt-md:hidden' : undefined} />
+            ) : key === 'langButton' ? (
+              <LangSwitch />
             ) : key === 'internalNavs' ? (
               internalNavs.map((item) => (
                 <NavItem type="internal" {item} {mergeOnMobile} />
@@ -128,7 +135,9 @@ for (const item of new Set(left)) {
                   mobileItemType="icon"
                 />
               ))}
-            <RssLink class="op-50!" />
+            {(left.includes('rssLink') || right.includes('rssLink')) && (
+              <RssLink class="op-50!" />
+            )}
           </Fragment>
         </NavSwitch>
       )

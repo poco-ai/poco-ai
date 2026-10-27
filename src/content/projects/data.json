@@ -2,42 +2,60 @@
   {
     "id": "Poco",
     "link": "https://github.com/poco-ai/poco-claw",
-    "desc": "网页、即时通讯和沙箱里的口袋同事。AI Hackathon Tour 2026 全国总决赛铜奖。",
+    "desc": {
+      "en": "A pocket coworker on the web, in messengers, and in a sandbox. Bronze at the national final of AI Hackathon Tour 2026.",
+      "zh": "网页、即时通讯和沙箱里的口袋同事。AI Hackathon Tour 2026 全国总决赛铜奖。"
+    },
     "icon": "i-ri-robot-2-line",
     "category": "Agents"
   },
   {
     "id": "Agentero",
     "link": "https://github.com/poco-ai/Agentero",
-    "desc": "人和 agent 一起用的科研工作台。",
+    "desc": {
+      "en": "A research bench for people and agents.",
+      "zh": "人和 agent 一起用的科研工作台。"
+    },
     "icon": "i-ri-book-open-line",
     "category": "Agents"
   },
   {
     "id": "YumGo",
     "link": "https://github.com/poco-ai/YumGo",
-    "desc": "把吃过的味道记成下一次的路线。抖音 AI 创变者长三角高校站第二名。",
+    "desc": {
+      "en": "A taste you have had, turned into the next route. Second at the Yangtze River Delta campus stop of Douyin AI Creator.",
+      "zh": "把吃过的味道记成下一次的路线。抖音 AI 创变者长三角高校站第二名。"
+    },
     "icon": "i-ri-restaurant-2-line",
     "category": "Applications"
   },
   {
     "id": "Clip",
     "link": "https://github.com/poco-ai/Clip",
-    "desc": "报销助手。",
+    "desc": {
+      "en": "An expense helper.",
+      "zh": "报销助手。"
+    },
     "icon": "i-ri-bill-line",
     "category": "Applications"
   },
   {
     "id": "TokenArena",
     "link": "https://github.com/poco-ai/TokenArena",
-    "desc": "把各处的 token 用量收到一处。",
+    "desc": {
+      "en": "Token use, collected in one place.",
+      "zh": "把各处的 token 用量收到一处。"
+    },
     "icon": "i-ri-pie-chart-2-line",
     "category": "Applications"
   },
   {
     "id": "Parqview",
     "link": "https://github.com/poco-ai/Parqview",
-    "desc": "在本地打开 Parquet。",
+    "desc": {
+      "en": "Opens Parquet locally.",
+      "zh": "在本地打开 Parquet。"
+    },
     "icon": "i-ri-table-line",
     "category": "Applications"
   }

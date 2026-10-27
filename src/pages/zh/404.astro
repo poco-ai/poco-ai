@@ -1,0 +1,14 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import { t } from '~/i18n'
+
+const title = '404'
+const description = t('zh', 'notFoundDesc')
+---
+
+<BaseLayout title={title} description={description} bgType={false} ogImage="fallback">
+  <StandardLayout title={title}>
+    <p slot="article">{t('zh', 'notFoundBody')}</p>
+  </StandardLayout>
+</BaseLayout>

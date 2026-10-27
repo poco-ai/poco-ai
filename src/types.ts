@@ -343,12 +343,13 @@ type NavBarComponentType =
   | 'searchButton'
   | 'themeButton'
   | 'rssLink'
+  | 'langButton'
   | 'hr'
 
 export interface NavBarLayout {
   /**
    * Defines which components ('internalNavs', 'socialLinks', 'searchButton', themeButton',
-   * 'rssLink', 'hr') are positioned on the left side of the navigation bar. Note:
+   * 'rssLink', 'langButton', 'hr') are positioned on the left side of the navigation bar. Note:
    *
    * - Leave empty to place all components on the right.
    * - No duplicates allowed between `left` and `right`.
@@ -359,7 +360,7 @@ export interface NavBarLayout {
 
   /**
    * Defines which components ('internalNavs', 'socialLinks', 'searchButton', 'themeButton',
-   * 'rssLink', 'hr') are positioned on the right side of the navigation bar. Note:
+   * 'rssLink', 'langButton', 'hr') are positioned on the right side of the navigation bar. Note:
    *
    * - Leave empty to place all components on the right.
    * - No duplicates allowed between `left` and `right`.

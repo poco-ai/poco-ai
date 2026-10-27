@@ -290,6 +290,7 @@ html.anchor-land .slide-enter-content > .is-anchor-shown {
    op-50! on nav items beats the utility hover, so the opacity override is required. */
 header nav > div > a,
 header nav > div > button,
+.lang-switch-button,
 #nav-open-button,
 #nav-panel a {
   transition-property: opacity, color;
@@ -299,10 +300,68 @@ header nav > div > button,
 
 header nav > div > a:hover,
 header nav > div > button:hover,
+.lang-switch-button:hover,
+.lang-switch-button.is-open,
 #nav-open-button:hover,
 #nav-panel a:hover {
   color: var(--c-text);
   opacity: 0.8 !important;
+}
+
+/* Language menu. Same surface as the tooltip, same row hover as search results. */
+.lang-switch {
+  position: relative;
+}
+
+.lang-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 0.55rem);
+  inset-inline-end: 0;
+  min-width: 8.25rem;
+  margin: 0;
+  padding: 0.3rem;
+  border: 1px solid rgb(0 0 0 / 0.12);
+  border-radius: 0.5rem;
+  background: var(--c-bg);
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 0.12);
+  list-style: none;
+}
+
+.lang-menu[hidden] {
+  display: none;
+}
+
+html.dark .lang-menu {
+  border-color: rgb(255 255 255 / 0.16);
+  box-shadow: 0 0 10px 0 rgb(255 255 255 / 0.14);
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.35rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.lang-option:hover,
+.lang-option:focus-visible,
+.lang-option.is-current {
+  background-color: #88888811;
+}
+
+html.dark .lang-option:hover,
+html.dark .lang-option:focus-visible,
+html.dark .lang-option.is-current {
+  background-color: #88888818;
+}
+
+.lang-option.is-current {
+  opacity: 1 !important;
 }
 
 /* Search */

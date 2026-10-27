@@ -1,5 +1,6 @@
 ---
 import Link from '~/components/base/Link.astro'
+import { localeFromPathname, localePath } from '~/i18n'
 import { ensureTrailingSlash, resolvePath } from '~/utils/path'
 import { UI } from '~/config'
 
@@ -21,8 +22,10 @@ if (
   tabs = UI.tabbedLayoutTabs
 }
 
+const locale = localeFromPathname(Astro.url.pathname)
 const currentPath = ensureTrailingSlash(Astro.url.pathname)
-const isActive = (href: string) => currentPath === resolvePath(href)
+const hrefFor = (path: string) => resolvePath(localePath(path, locale))
+const isActive = (path: string) => currentPath === hrefFor(path)
 ---
 
 <nav id="nav-tabs" class="prose mx-auto mb-8" aria-label="Page sections">
@@ -39,11 +42,9 @@ const isActive = (href: string) => currentPath === resolvePath(href)
             'active': isActive(tab.path),
             'inactive': !isActive(tab.path),
           }}
-          href={resolvePath(tab.path)}
+          href={hrefFor(tab.path)}
           role="tab"
-          aria-current={
-            Astro.url.pathname === resolvePath(tab.path) ? 'page' : false
-          }
+          aria-current={isActive(tab.path) ? 'page' : false}
         >
           {tab.title}
         </Link>

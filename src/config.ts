@@ -1,14 +1,14 @@
 import type { Site, Ui, Features } from './types'
+import { DEFAULT_LOCALE, OG_LOCALE, t } from './i18n'
 
 export const SITE: Site = {
   website: 'https://poco-ai.github.io/',
   base: '/',
   title: 'Poco',
-  description:
-    'Poco-AI 是来自浙江大学的校内团队，做 AI 应用与工具，把大模型用到日常学习和工作里。',
+  description: t(DEFAULT_LOCALE, 'pageHomeDescription'),
   author: 'Poco-AI',
-  lang: 'zh',
-  ogLocale: 'zh_CN',
+  lang: DEFAULT_LOCALE,
+  ogLocale: OG_LOCALE[DEFAULT_LOCALE],
   imageDomains: ['cdn.bsky.app', 'images.unsplash.com'],
 }
 
@@ -33,13 +33,7 @@ export const UI: Ui = {
       text: 'Photos',
       icon: 'i-ri-camera-ai-line',
     },
-    {
-      path: '/shorts',
-      title: 'Shorts',
-      displayMode: 'iconToTextOnMobile',
-      text: 'Shorts',
-      icon: 'i-meteor-icons-grid',
-    },
+    // Shorts stays routable. The nav entry stays off until that section is ready.
   ],
   socialLinks: [
     {
@@ -58,7 +52,7 @@ export const UI: Ui = {
       'hr',
       'searchButton',
       'themeButton',
-      'rssLink',
+      'langButton',
     ],
     mergeOnMobile: true,
   },
@@ -158,7 +152,8 @@ export const FEATURES: Features = {
   search: [
     true,
     {
-      includes: ['blog', 'shorts'],
+      // Shorts stays out of search while its nav entry is hidden.
+      includes: ['blog'],
       filter: true,
       navHighlight: true,
       batchLoadSize: [true, 5],

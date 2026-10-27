@@ -2,7 +2,10 @@
 import Loader from '~/components/base/Loader.astro'
 import ImageViewer from '~/components/widgets/ImageViewer.astro'
 
+import { localeFromPathname, t } from '~/i18n'
 import { hash } from '~/pages/photos/photos.[hash].json'
+
+const locale = localeFromPathname(Astro.url.pathname)
 
 interface Props {
   gap?: number
@@ -32,6 +35,7 @@ const {
     data-batch-size={batchSize}
     data-layout={layout}
     data-masonry-strategy={layout === 'masonry' ? masonryStrategy : undefined}
+    data-open-label={t(locale, 'openViewer')}
     class="photo-view block relative w-full"
   >
     <div class="photo-container"></div>
@@ -40,7 +44,7 @@ const {
         flex items-center justify-center w-10 h-10 rounded-full
         op-30 op-transition lt-lgp:(op-50! bg-#8883 dark:bg-#8886)
         hover:(op-100! bg-#8883) print:hidden"
-      title="Layout toggle"
+      title={t(locale, 'layoutToggle')}
     >
       <div u-i-ri-layout-masonry-line class="icon-masonry hidden"></div>
       <div u-i-ri-layout-grid-2-line class="icon-grid hidden"></div>
@@ -57,6 +61,11 @@ const {
 
 <script>
   import type { PhotoItem } from '~/pages/photos/photos.[hash].json'
+
+  function photoCaption(desc: PhotoItem['desc']) {
+    const locale = document.body?.dataset.locale === 'zh' ? 'zh' : 'en'
+    return desc[locale] || desc.en || ''
+  }
 
   class PhotoView extends HTMLElement {
     #initialized = false
@@ -221,7 +230,7 @@ const {
         fig.dataset.aspectRatio = aspect.toString()
         fig.setAttribute('role', 'button')
         fig.setAttribute('tabindex', '0')
-        fig.setAttribute('aria-label', 'Open viewer')
+        fig.setAttribute('aria-label', this.dataset.openLabel || 'Open viewer')
         fig.style.setProperty('--photo-top', top.toString() + 'px')
         fig.style.setProperty('--photo-left', left.toString() + 'px')
         fig.style.setProperty('--photo-height', `${height}px`)
@@ -229,7 +238,8 @@ const {
 
         const img = document.createElement('img')
         img.src = item.thumbnail
-        img.alt = item.desc
+        const caption = photoCaption(item.desc)
+        img.alt = caption
         img.dataset.origin = item.src
         img.addEventListener(
           'load',
@@ -240,9 +250,9 @@ const {
         )
         fig.appendChild(img)
 
-        if (item.desc) {
+        if (caption) {
           const figcaption = document.createElement('figcaption')
-          figcaption.textContent = item.desc
+          figcaption.textContent = caption
           figcaption.setAttribute('aria-hidden', 'true')
           fig.appendChild(figcaption)
         }
@@ -282,12 +292,13 @@ const {
         fig.className = 'photo-figure'
         fig.setAttribute('role', 'button')
         fig.setAttribute('tabindex', '0')
-        fig.setAttribute('aria-label', 'Open viewer')
+        fig.setAttribute('aria-label', this.dataset.openLabel || 'Open viewer')
         fig.style.setProperty('--photo-placeholder', `url(${item.placeholder})`)
 
         const img = document.createElement('img')
         img.src = item.thumbnail
-        img.alt = item.desc
+        const caption = photoCaption(item.desc)
+        img.alt = caption
         img.dataset.origin = item.src
         img.addEventListener(
           'load',
@@ -298,9 +309,9 @@ const {
         )
         fig.appendChild(img)
 
-        if (item.desc) {
+        if (caption) {
           const figcaption = document.createElement('figcaption')
-          figcaption.textContent = item.desc
+          figcaption.textContent = caption
           figcaption.setAttribute('aria-hidden', 'true')
           fig.appendChild(figcaption)
         }

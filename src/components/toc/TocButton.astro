@@ -1,5 +1,7 @@
 ---
+import { localeFromPathname, t } from '~/i18n'
 
+const label = t(localeFromPathname(Astro.url.pathname), 'openToc')
 ---
 
 <button
@@ -9,7 +11,8 @@
     op-0 bg-#8883 dark:bg-#8886 pointer-events-none op-transition
     lt-lgp:(op-50 pointer-events-auto)
     hover:op-100 print:hidden"
-  title="Open table of contents"
+  title={label}
+  aria-label={label}
 >
   <div u-i-lucide-table-of-contents class="text-gray-700 dark:text-gray-200">
   </div>

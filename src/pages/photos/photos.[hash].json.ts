@@ -22,13 +22,13 @@ import type { Logger } from '~/utils/server'
 export interface PhotoItem {
   uuid: string
   src: string
-  desc: string
+  desc: { en: string; zh: string }
   thumbnail: string
   placeholder: string
   aspectRatio: number
 }
 
-const VERSION = 1
+const VERSION = 2
 const CACHE_PATH = './node_modules/.astro/photos/'
 const PLACEHOLDER_PIXEL_TARGET = 100
 const THUMBNAIL_WIDTH = 720 // balance high pixel density and file size

@@ -5,6 +5,7 @@ import Link from '~/components/base/Link.astro'
 import GithubItem from '~/components/views/GithubItem.astro'
 import Warning from '~/components/base/Warning.astro'
 import { UI } from '~/config'
+import { localeFromPathname, t } from '~/i18n'
 import { formatDate, isDiffMonth } from '~/utils/datetime'
 import { withBasePath } from '~/utils/path'
 import { matchLogo, extractPackageName, processVersion } from '~/utils/data'
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const { collectionType } = Astro.props
+const locale = localeFromPathname(Astro.url.pathname)
 const { monorepos, mainLogoOverrides, subLogoMatches } = UI.githubView
 
 const MAX_PER_PKG = 5
@@ -171,13 +173,13 @@ if (collectionType === 'prs') {
         <hr class="mt-3em!" />
         <p class="flex lt-sm:flex-col items-center my-0! lt-sm:my-1.5!">
           <span>
-            Last fetched:{' '}
+            {t(locale, 'lastFetched')}{' '}
             <time
               class="inline-block text-[var(--fg-deeper)]"
               datetime={new Date().toISOString()}
               title={new Date().toISOString()}
             >
-              {formatDate(new Date())}
+              {formatDate(new Date(), true, false, locale)}
             </time>
           </span>
           <span class="lt-sm:hidden">&nbsp;|&nbsp;</span>
