@@ -146,14 +146,36 @@ export function t(locale: Locale, key: ChromeKey): string {
   return chrome[key][locale]
 }
 
+function siteBase(): string {
+  const raw = import.meta.env.BASE_URL
+  if (!raw || raw === '/') return ''
+  return raw.replace(/\/+$/, '')
+}
+
+function logicalPathname(pathname: string): string {
+  const normalized = pathname.startsWith('/') ? pathname : `/${pathname}`
+  const base = siteBase()
+  if (!base) return normalized
+  if (normalized === base) return '/'
+  if (normalized.startsWith(`${base}/`)) return normalized.slice(base.length)
+  return normalized
+}
+
+function withSiteBase(pathname: string): string {
+  const logical = pathname.startsWith('/') ? pathname : `/${pathname}`
+  const base = siteBase()
+  if (!base) return logical
+  return `${base}${logical}`.replace(/\/{2,}/g, '/')
+}
+
 export function localeFromPathname(pathname: string): Locale {
-  const segment = pathname.split('/').filter(Boolean)[0]
+  const segment = logicalPathname(pathname).split('/').filter(Boolean)[0]
   if (segment && isLocale(segment) && segment !== DEFAULT_LOCALE) return segment
   return DEFAULT_LOCALE
 }
 
 export function stripLocale(pathname: string): string {
-  const normalized = pathname.startsWith('/') ? pathname : `/${pathname}`
+  const normalized = logicalPathname(pathname)
   const locale = localeFromPathname(normalized)
   if (locale === DEFAULT_LOCALE) return normalized
   const rest = normalized.replace(new RegExp(`^/${locale}(?=/|$)`), '')
@@ -168,15 +190,16 @@ export function localePath(pathname: string, locale: Locale): string {
 }
 
 export function isLocaleHome(pathname: string): boolean {
-  const home = localePath('/', localeFromPathname(pathname))
-  const current = pathname.endsWith('/') ? pathname : `${pathname}/`
+  const logical = logicalPathname(pathname)
+  const home = localePath('/', localeFromPathname(logical))
+  const current = logical.endsWith('/') ? logical : `${logical}/`
   const target = home.endsWith('/') ? home : `${home}/`
   return current === target
 }
 
 export function localizeHref(href: string, pathname: string): string {
   if (!href.startsWith('/') || href.startsWith('//')) return href
-  return localePath(href, localeFromPathname(pathname))
+  return withSiteBase(localePath(href, localeFromPathname(pathname)))
 }
 
 export function navLabel(locale: Locale, path: string): string | undefined {

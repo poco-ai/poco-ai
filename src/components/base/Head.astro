@@ -7,7 +7,7 @@ import {
   resolveOgImagePathname,
 } from '~/utils/og-image/routing'
 import { silentLogger } from '~/utils/server'
-import { withBasePath, ensureTrailingSlash } from '~/utils/path'
+import { withBasePath, resolvePath } from '~/utils/path'
 import { SITE } from '~/config'
 import { LOCALES, OG_LOCALE, localeFromPathname, localePath } from '~/i18n'
 
@@ -165,14 +165,14 @@ const webPageData = {
     <link
       rel="alternate"
       hreflang={code}
-      href={new URL(ensureTrailingSlash(localePath(barePath, code)), Astro.site).href}
+      href={new URL(resolvePath(localePath(barePath, code)), Astro.site).href}
     />
   ))
 }
 <link
   rel="alternate"
   hreflang="x-default"
-  href={new URL(ensureTrailingSlash(barePath), Astro.site).href}
+  href={new URL(resolvePath(barePath), Astro.site).href}
 />
 
 <!-- Icon -->
