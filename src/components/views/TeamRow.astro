@@ -1,6 +1,10 @@
+---
+import { withBasePath } from '~/utils/path'
+---
+
 <div class="team-row">
   <figure>
-    <img class="no-zoom" src="/team/huawei-fan.jpg" alt="Huawei Fan" />
+    <img class="no-zoom" src={withBasePath('/team/huawei-fan.jpg')} alt="Huawei Fan" />
     <figcaption>
       <span>Huawei Fan</span>
       <a
@@ -15,7 +19,7 @@
     </figcaption>
   </figure>
   <figure>
-    <img class="no-zoom" src="/team/qiyuan-chen.jpg" alt="Qiyuan Chen" />
+    <img class="no-zoom" src={withBasePath('/team/qiyuan-chen.jpg')} alt="Qiyuan Chen" />
     <figcaption>
       <span>Qiyuan Chen</span>
       <a
@@ -30,7 +34,7 @@
     </figcaption>
   </figure>
   <figure>
-    <img class="no-zoom" src="/team/jiahe-chen.jpg" alt="Jiahe Chen" />
+    <img class="no-zoom" src={withBasePath('/team/jiahe-chen.jpg')} alt="Jiahe Chen" />
     <figcaption>
       <span>Jiahe Chen</span>
       <a
@@ -45,7 +49,7 @@
     </figcaption>
   </figure>
   <figure>
-    <img class="no-zoom" src="/team/junhao-zhuo.jpg" alt="Junhao Zhuo" />
+    <img class="no-zoom" src={withBasePath('/team/junhao-zhuo.jpg')} alt="Junhao Zhuo" />
     <figcaption>
       <span>Junhao Zhuo</span>
       <a

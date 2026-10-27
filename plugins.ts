@@ -7,6 +7,7 @@ import remarkDirectiveSugar from 'remark-directive-sugar'
 import remarkImgattr from 'remark-imgattr'
 import remarkMath from 'remark-math'
 
+import { prefixPublicPath } from './src/utils/public-path'
 import { remarkFolder } from './src/utils/remark-folder'
 import { remarkPoem } from './src/utils/remark-poem'
 import { useFolderPipeline } from './src/utils/specimen'
@@ -128,6 +129,13 @@ export const remarkPlugins: RemarkPlugins = [
           const props: ReturnType<PropertiesFromTextDirective> = {
             'aria-hidden': 'true',
           }
+          const img = node.attributes?.img
+          if (
+            typeof img === 'string' &&
+            img.startsWith('/') &&
+            !img.startsWith('//')
+          )
+            props.src = prefixPublicPath(img)
           if (node.attributes?.class?.includes('github'))
             props.src = 'https://github.githubassets.com/favicons/favicon.svg'
           return props

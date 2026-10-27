@@ -5,6 +5,8 @@ import { decode } from 'html-entities'
 import { toString } from 'mdast-util-to-string'
 import { visit } from 'unist-util-visit'
 
+import { prefixPublicPath } from './public-path'
+
 // ::github, ::song, ::card, and ::paper. Metadata is fetched at build time
 // and cached in .cache/embed-cards.json. A failed fetch still renders a link.
 
@@ -590,7 +592,7 @@ function renderSong(id: string, card: SongCard | null): HastElement {
             'img',
             {
               className: 'note-card-netease no-zoom',
-              src: '/logos/netease-cloud-music.svg',
+              src: prefixPublicPath('/logos/netease-cloud-music.svg'),
               alt: '',
               width: '18',
               height: '18',
@@ -720,7 +722,7 @@ function renderPaper(id: string, card: PaperCard | null): HastElement {
 }
 
 function arxivMark(): HastElement {
-  const image = mediaImage('/logos/arxiv.svg', false)
+  const image = mediaImage(prefixPublicPath('/logos/arxiv.svg'), false)
   image.properties.alt = 'arXiv'
   image.properties.className = `${image.properties.className} note-card-logo`
   return image

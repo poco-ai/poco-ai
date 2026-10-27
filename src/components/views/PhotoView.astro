@@ -147,7 +147,10 @@ const {
     }
 
     #fetchData = async () => {
-      const res = await fetch(`/photos/photos.${this.dataset.hash}.json`)
+      const base = import.meta.env.BASE_URL.endsWith('/')
+        ? import.meta.env.BASE_URL
+        : `${import.meta.env.BASE_URL}/`
+      const res = await fetch(`${base}photos/photos.${this.dataset.hash}.json`)
       const [_v, data] = (await res.json()) as [string, PhotoItem[]]
       this.#allItems = data
     }
