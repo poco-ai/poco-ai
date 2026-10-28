@@ -2,7 +2,7 @@
 
 Poco-AI 是浙江大学的校内学生团队，做 AI 应用与工具。
 
-站点：[https://poco-ai.github.io/poco-ai/](https://poco-ai.github.io/poco-ai/)
+站点：[https://poco-ai.pages.dev/](https://poco-ai.pages.dev/)
 
 英文在根路径，中文在 `/zh/`。
 
@@ -15,7 +15,7 @@ pnpm install
 pnpm dev
 ```
 
-开发地址：[http://localhost:4321/poco-ai/](http://localhost:4321/poco-ai/)
+开发地址：[http://localhost:4321/](http://localhost:4321/)
 
 ```sh
 pnpm lint
@@ -31,7 +31,13 @@ pnpm build
 
 ## 发布
 
-推送到 `main` 后，`.github/workflows/pages.yml` 构建并发布到 GitHub Pages。Pages 的 Source 为 GitHub Actions。
+部署在 Cloudflare Pages，从 `main` 自动构建。项目设置：
+
+- Build command：`pnpm build`
+- Build output directory：`dist`
+- 环境变量：`NODE_VERSION=22`、`PNPM_VERSION=11`
+
+站点地址配置在 `src/config.ts` 的 `website`，换成自定义域名时同步修改。
 
 ## 许可
 

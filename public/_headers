@@ -1,0 +1,5 @@
+/giscus/*
+  Access-Control-Allow-Origin: https://giscus.app
+
+/_astro/fonts/*
+  Access-Control-Allow-Origin: https://giscus.app

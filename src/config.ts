@@ -2,8 +2,8 @@ import type { Site, Ui, Features } from './types'
 import { DEFAULT_LOCALE, OG_LOCALE, t } from './i18n'
 
 export const SITE: Site = {
-  website: 'https://poco-ai.github.io/poco-ai/',
-  base: '/poco-ai/',
+  website: 'https://poco-ai.pages.dev/',
+  base: '/',
   title: 'Poco',
   description: t(DEFAULT_LOCALE, 'pageHomeDescription'),
   author: 'Poco-AI',
