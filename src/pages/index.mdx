@@ -15,7 +15,8 @@ import HomeColumn from '~/components/views/HomeColumn.astro'
   bgType={frontmatter.bgType}
   ogImage={frontmatter.ogImage}
 >
-  <StandardLayout title={frontmatter.title} isWide>
+  <StandardLayout isWide>
+    <h1 slot="head" class="sr-only">{frontmatter.title}</h1>
     <div slot="article">
       <HomeColumn locale="en" />
     </div>

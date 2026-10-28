@@ -9,7 +9,8 @@ const description = t('zh', 'pageHomeDescription')
 ---
 
 <BaseLayout title={title} description={description} bgType="plum" ogImage={true}>
-  <StandardLayout title={title} isWide>
+  <StandardLayout isWide>
+    <h1 slot="head" class="sr-only">{title}</h1>
     <div slot="article">
       <HomeColumn locale="zh" />
     </div>
