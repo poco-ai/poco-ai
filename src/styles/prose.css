@@ -18,6 +18,7 @@
   text-decoration: none;
   font-weight: inherit;
 }
+
 .prose strong {
   color: var(--fg-deep);
   font-weight: 600;
@@ -111,7 +112,7 @@
   color: var(--fg-deep);
   font-weight: 800;
   font-size: 1.6em;
-  margin-top: 2em;
+  margin-top: 3em;
   margin-bottom: 1em;
   line-height: 1.3333333;
 }
@@ -180,6 +181,16 @@
 }
 .prose .team-row figcaption p {
   margin: 0;
+}
+.prose .team-row figcaption a.team-homepage {
+  color: inherit;
+  /* .prose a only transitions border, so the shared op-transition shortcut does not apply. */
+  transition-property: opacity, color;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+.prose .team-row figcaption a.team-homepage:hover {
+  color: var(--fg);
 }
 .prose .team-row figcaption a.team-github {
   display: inline-flex;

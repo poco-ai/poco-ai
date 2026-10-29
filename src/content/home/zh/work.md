@@ -8,13 +8,9 @@
 
 ::github[poco-ai/Agentero]
 
-::github[poco-ai/poco-claw]
+::github[poco-ai/poco-claw]{img=/logos/poco.svg}
 
-::github[poco-ai/YumGo]
-
-::github[poco-ai/Clip]
-
-::github[poco-ai/TokenArena]
+::github[poco-ai/TokenArena]{img=/logos/tokenarena.svg}
 
 ## 联系我们
 

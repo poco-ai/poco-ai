@@ -1,66 +1,71 @@
 ---
 import { withBasePath } from '~/utils/path'
+
+interface Member {
+  name: string
+  photo: string
+  github: string
+  homepage?: string
+}
+
+const team: Member[] = [
+  {
+    name: 'Huawei Fan',
+    photo: '/team/huawei-fan.jpg',
+    github: 'https://github.com/Phil-Fan',
+    homepage: 'https://philfan.cn',
+  },
+  {
+    name: 'Qiyuan Chen',
+    photo: '/team/qiyuan-chen.jpg',
+    github: 'https://github.com/qychen2001',
+  },
+  {
+    name: 'Jiahe Chen',
+    photo: '/team/jiahe-chen.jpg',
+    github: 'https://github.com/JiaheChen2002',
+  },
+  {
+    name: 'Junhao Zhuo',
+    photo: '/team/junhao-zhuo.jpg',
+    github: 'https://github.com/ffy6511',
+  },
+]
 ---
 
 <div class="team-row">
-  <figure>
-    <img class="no-zoom" src={withBasePath('/team/huawei-fan.jpg')} alt="Huawei Fan" />
-    <figcaption>
-      <span>Huawei Fan</span>
-      <a
-        class="team-github"
-        href="https://github.com/Phil-Fan"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Huawei Fan on GitHub"
-      >
-        <span class="i-ri-github-fill" aria-hidden="true" />
-      </a>
-    </figcaption>
-  </figure>
-  <figure>
-    <img class="no-zoom" src={withBasePath('/team/qiyuan-chen.jpg')} alt="Qiyuan Chen" />
-    <figcaption>
-      <span>Qiyuan Chen</span>
-      <a
-        class="team-github"
-        href="https://github.com/qychen2001"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Qiyuan Chen on GitHub"
-      >
-        <span class="i-ri-github-fill" aria-hidden="true" />
-      </a>
-    </figcaption>
-  </figure>
-  <figure>
-    <img class="no-zoom" src={withBasePath('/team/jiahe-chen.jpg')} alt="Jiahe Chen" />
-    <figcaption>
-      <span>Jiahe Chen</span>
-      <a
-        class="team-github"
-        href="https://github.com/JiaheChen2002"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Jiahe Chen on GitHub"
-      >
-        <span class="i-ri-github-fill" aria-hidden="true" />
-      </a>
-    </figcaption>
-  </figure>
-  <figure>
-    <img class="no-zoom" src={withBasePath('/team/junhao-zhuo.jpg')} alt="Junhao Zhuo" />
-    <figcaption>
-      <span>Junhao Zhuo</span>
-      <a
-        class="team-github"
-        href="https://github.com/ffy6511"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Junhao Zhuo on GitHub"
-      >
-        <span class="i-ri-github-fill" aria-hidden="true" />
-      </a>
-    </figcaption>
-  </figure>
+  {
+    team.map((member) => (
+      <figure>
+        <img
+          class="no-zoom"
+          src={withBasePath(member.photo)}
+          alt={member.name}
+        />
+        <figcaption>
+          {member.homepage ? (
+            <a
+              class="team-homepage"
+              href={member.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {member.name}
+            </a>
+          ) : (
+            <span>{member.name}</span>
+          )}
+          <a
+            class="team-github"
+            href={member.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${member.name} on GitHub`}
+          >
+            <span class="i-ri-github-fill" aria-hidden="true" />
+          </a>
+        </figcaption>
+      </figure>
+    ))
+  }
 </div>

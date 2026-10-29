@@ -20,26 +20,6 @@
     "category": "Agents"
   },
   {
-    "id": "YumGo",
-    "link": "https://github.com/poco-ai/YumGo",
-    "desc": {
-      "en": "A taste you have had, turned into the next route. Second at the Yangtze River Delta campus stop of Douyin AI Creator.",
-      "zh": "把吃过的味道记成下一次的路线。抖音 AI 创变者长三角高校站第二名。"
-    },
-    "icon": "i-ri-restaurant-2-line",
-    "category": "Applications"
-  },
-  {
-    "id": "Clip",
-    "link": "https://github.com/poco-ai/Clip",
-    "desc": {
-      "en": "An expense helper.",
-      "zh": "报销助手。"
-    },
-    "icon": "i-ri-bill-line",
-    "category": "Applications"
-  },
-  {
     "id": "TokenArena",
     "link": "https://github.com/poco-ai/TokenArena",
     "desc": {

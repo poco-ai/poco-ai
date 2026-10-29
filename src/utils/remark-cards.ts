@@ -354,11 +354,15 @@ function mediaImage(src: string, icon: boolean): HastElement {
   )
 }
 
-function renderGithub(repoName: string, card: GithubCard | null): HastElement {
+function renderGithub(
+  repoName: string,
+  card: GithubCard | null,
+  logo = ''
+): HastElement {
   const href = card?.url || `https://github.com/${repoName}`
   if (!card) {
     return cardLink('github', href, null, [
-      titleLine([titleEl([text(repoName)]), tagEl('repo')]),
+      titleLine([titleEl([text(repoName)])]),
     ])
   }
 
@@ -369,7 +373,6 @@ function renderGithub(repoName: string, card: GithubCard | null): HastElement {
     ]),
   ]
   if (Number.isFinite(card.stars)) line.push(starsEl(card.stars))
-  line.push(tagEl('repo'))
 
   const body: HastChild[] = [titleLine(line)]
   const description = descriptionEl(card.description)
@@ -396,7 +399,8 @@ function renderGithub(repoName: string, card: GithubCard | null): HastElement {
     body.push(el('span', { className: 'note-card-meta' }, meta))
   }
 
-  const media = card.avatar ? mediaImage(card.avatar, false) : null
+  const mediaSrc = logo || card.avatar
+  const media = mediaSrc ? mediaImage(mediaSrc, false) : null
   return cardLink('github', href, media, body)
 }
 
@@ -1155,7 +1159,12 @@ async function renderDirective(node: DirectiveNode): Promise<HastElement> {
       () => loadGithub(repoName),
       parseGithub
     )
-    return renderGithub(repoName, card)
+    const logo = imageSrc(attr(node, 'img', 'logo', 'image'))
+    return renderGithub(
+      repoName,
+      card,
+      logo.startsWith('/') ? prefixPublicPath(logo) : logo
+    )
   }
 
   if (name === 'song') {

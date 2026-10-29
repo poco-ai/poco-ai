@@ -8,13 +8,9 @@ A good tool should be simple, reliable, and easy to use. The products are open s
 
 ::github[poco-ai/Agentero]
 
-::github[poco-ai/poco-claw]
+::github[poco-ai/poco-claw]{img=/logos/poco.svg}
 
-::github[poco-ai/YumGo]
-
-::github[poco-ai/Clip]
-
-::github[poco-ai/TokenArena]
+::github[poco-ai/TokenArena]{img=/logos/tokenarena.svg}
 
 ## Contact
 
